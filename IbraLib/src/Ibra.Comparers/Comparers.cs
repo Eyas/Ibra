@@ -144,7 +144,7 @@ namespace Ibra.Comparers
             if (b == null) return 1;
 
             int ca = a.Count, cb = b.Count;
-            int min = System.Math.Min(ca, cb);
+            int min = (ca <= cb) ? ca : cb;
 
             for (int i = 0; i < min; ++i)
             {

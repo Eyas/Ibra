@@ -1,6 +1,6 @@
 {
   "title": "Ibra.Comparers",
-  "version": "1.0.0-rc",
+  "version": "1.0.0-rc1",
   "description": "Provides support for list equality and ordinal comparison based on the contents of its individual items. Allows users to pass ImmutableLists to dictionaries and hash sets, quickly copmare the values of individual ILists, etc.",
   "summary": "Ibra.Comparers Class Library",
   "authors": [ "Eyas" ],
@@ -10,12 +10,13 @@
   "iconUrl": "http://eyas.sh/images/nuget/IbraIcon.png",
 
   "dependencies": {
-    "System.Collections": "4.0.10-beta-23019",
     "System.Runtime": "4.0.20-beta-23019",
-    "Microsoft.CSharp": "4.0.0-beta-23019"
+    "System.Collections": "4.0.10-beta-23019"
   },
 
   "frameworks": {
-    "dotnet": { }
+    "dotnet": { },
+    "dnxcore50": { },
+    "dnx46": { }
   }
 }
