@@ -1,0 +1,19 @@
+{
+    "version": "1.0.0-*",
+    "description": "Ibra.Enumerables Class Library",
+    "authors": [ "Eyas" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+
+    "dependencies": {
+        "System.Collections": "4.0.10",
+        "System.Linq": "4.0.0",
+        "System.Runtime": "4.0.20",
+        "Ibra.Polymorphic": "1.0.0"
+    },
+
+    "frameworks": {
+        "dotnet": { }
+    }
+}

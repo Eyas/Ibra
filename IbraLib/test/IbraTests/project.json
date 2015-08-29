@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "Eyas" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "System.Collections": "4.0.10",
+    "System.Linq": "4.0.0",
+    "System.Runtime": "4.0.20",
+    "Microsoft.CSharp": "4.0.0",
+    "Xunit": "2.1.0-beta4-build3109",
+    "xunit.runner.dnx": "2.1.0-beta4-build134",
+    "Ibra.Comparers": "1.0.1",
+    "Ibra.Enumerables": "1.0.0-*",
+    "Ibra.Lazy": "1.0.0",
+    "Ibra.Polymorphic": "1.0.0"
+  },
+
+  "commands": {
+    "test": "xunit.runner.dnx"
+  },
+
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  }
+}
