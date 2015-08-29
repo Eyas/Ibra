@@ -56,5 +56,18 @@ namespace Ibra.Polymorphic.Invariant.Extensions
                 return Maybe<TValue>.Nothing;
             }
         }
+
+        public static Maybe<TValue> Get<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            TValue result;
+            if (dictionary.TryGetValue(key, out result))
+            {
+                return Maybe.Just(result);
+            }
+            else
+            {
+                return Maybe<TValue>.Nothing;
+            }
+        }
     }
 }
