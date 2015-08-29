@@ -6,7 +6,7 @@ namespace Ibra.Comparers
     /// Compares two lists according to some comparer.
     /// </summary>
     /// <typeparam name="T">Contained type in the Lists being compared.</typeparam>
-    public class OrderedEquator<T> : IEqualityComparer<IList<T>>
+    public class OrderedEquator<T> : IEqualityComparer<IReadOnlyList<T>>
     {
         /// <summary>
         /// Creates an OrderedEquator with the Default equality comparer for the elements.
@@ -27,7 +27,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public bool Equals(IList<T> a, IList<T> b)
+        public bool Equals(IReadOnlyList<T> a, IReadOnlyList<T> b)
         {
             if (a == b) return true;
             if (a == null) return false;
@@ -42,7 +42,7 @@ namespace Ibra.Comparers
             }
             return true;
         }
-        public int GetHashCode(IList<T> x)
+        public int GetHashCode(IReadOnlyList<T> x)
         {
             if (x == null) return -1;
             int h = 0;
@@ -77,7 +77,7 @@ namespace Ibra.Comparers
     ///    null   EQ    null
     /// </example>
     /// <typeparam name="T">Contained type in the Lists being compared.</typeparam>
-    public class OrderedComparer<T> : IComparer<IList<T>>
+    public class OrderedComparer<T> : IComparer<IReadOnlyList<T>>
     {
         public OrderedComparer()
         {
@@ -87,7 +87,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public int Compare(IList<T> a, IList<T> b)
+        public int Compare(IReadOnlyList<T> a, IReadOnlyList<T> b)
         {
             if (a == b) return 0;
             if (a == null) return -1;
@@ -127,7 +127,7 @@ namespace Ibra.Comparers
     ///    null   EQ   null
     /// </example>
     /// <typeparam name="T">Contained type in the Lists being compared.</typeparam>
-    public class LexicographicalComparer<T> : IComparer<IList<T>>
+    public class LexicographicalComparer<T> : IComparer<IReadOnlyList<T>>
     {
         public LexicographicalComparer()
         {
@@ -137,7 +137,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public int Compare(IList<T> a, IList<T> b)
+        public int Compare(IReadOnlyList<T> a, IReadOnlyList<T> b)
         {
             if (a == b) return 0;
             if (a == null) return -1;

@@ -1,6 +1,6 @@
 {
   "title": "Ibra.Comparers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides support for list equality and ordinal comparison based on the contents of its individual items. Allows users to pass ImmutableLists to dictionaries and hash sets, quickly copmare the values of individual ILists, etc.",
   "summary": "Ibra.Comparers Class Library",
   "authors": [ "Eyas" ],
