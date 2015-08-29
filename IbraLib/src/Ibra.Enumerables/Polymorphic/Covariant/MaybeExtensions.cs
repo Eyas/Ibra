@@ -44,6 +44,19 @@ namespace Ibra.Polymorphic.Covariant.Extensions
             return Nothing<T>.Instance;
         }
 
+        public static Maybe<TValue> Get<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            TValue result;
+            if (dictionary.TryGetValue(key, out result))
+            {
+                return Maybe.Just(result);
+            }
+            else
+            {
+                return Nothing<TValue>.Instance;
+            }
+        }
+
         public static IEnumerable<TCommon> MergeAll<TA, TB, TCommon>(this IEnumerable<Either<TA, TB>> sequence)
             where TA : TCommon
             where TB : TCommon
