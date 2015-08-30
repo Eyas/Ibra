@@ -146,8 +146,8 @@ namespace Ibra.Polymorphic.Invariant
         /// containing a value if and only if this contains a value and the predicate
         /// matches Value, or otherwise Nothing.
         /// </returns>
-        Maybe<T> Filter(Predicate<T> filter) =>
-            filter(_value) ? this : Nothing;
+        public Maybe<T> Filter(Predicate<T> filter) =>
+            _hasValue ? (filter(_value) ? this : Nothing) : Nothing;
 
         /// <summary>
         /// Get the contained value of a Maybe polymorphic type if it is
