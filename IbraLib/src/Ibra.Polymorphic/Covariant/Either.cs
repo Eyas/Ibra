@@ -20,6 +20,13 @@ namespace Ibra.Polymorphic.Covariant
         public static Either<A, B> Either<A, B>(A item) => new Either_Ab<A, B>(item);
         public static Either<A, B> Either<A, B>(B item) => new Either_aB<A, B>(item);
 
+        public static Either<A, B> Either<A, B>(Maybe<A> a, Maybe<B> b)
+        {
+            if (a.HasValue) return Either<A, B>(a.Value);
+            else if (b.HasValue) return Either<A, B>(b.Value);
+            else throw new ArgumentException("There is no value contained in any of the passed arguments.");
+        }
+
         private sealed class Either_Ab<A, B> : Either<A, B>
         {
             private readonly A _item;
@@ -38,6 +45,14 @@ namespace Ibra.Polymorphic.Covariant
         public static Either<A, B, C> Either<A, B, C>(A item) => new Either_Abc<A, B, C>(item);
         public static Either<A, B, C> Either<A, B, C>(B item) => new Either_aBc<A, B, C>(item);
         public static Either<A, B, C> Either<A, B, C>(C item) => new Either_abC<A, B, C>(item);
+
+        public static Either<A, B, C> Either<A, B, C>(Maybe<A> a, Maybe<B> b, Maybe<C> c)
+        {
+            if (a.HasValue) return Either<A, B, C>(a.Value);
+            else if (b.HasValue) return Either<A, B, C>(b.Value);
+            else if (c.HasValue) return Either<A, B, C>(c.Value);
+            else throw new ArgumentException("There is no value contained in any of the passed arguments.");
+        }
 
         private sealed class Either_Abc<A, B, C> : Either<A, B, C>
         {
