@@ -9,6 +9,20 @@ namespace Ibra.Enumerables
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> sequence) =>
             sequence.SelectMany(sublist => sublist);
 
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T?> sequence) where T : struct
+        {
+            foreach (var nullable in sequence)
+            {
+                if (nullable.HasValue) yield return nullable.Value;
+            }
+        }
+
+        public static IEnumerable<T> SelectWhere<U, T>(this IEnumerable<U> sequence, Func<U, T?> func) where T : struct
+            => sequence.Select(func).Flatten();
+
+        public static IEnumerable<T> ToEnumerable<T>(this T? maybe) where T : struct
+            => maybe.HasValue ? One(maybe.Value) : Enumerable.Empty<T>();
+
         public static IEnumerable<T> One<T>(T item) => new SingleEnumerable<T>(item);
 
         public static IEnumerable<TTo> WhereCast<TFrom, TTo>(this IEnumerable<TFrom> sequence) where TTo : class, TFrom
