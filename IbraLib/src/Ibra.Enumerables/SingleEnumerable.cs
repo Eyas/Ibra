@@ -64,7 +64,10 @@ namespace Ibra.Enumerables
 
         public int Count => 1;
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            _state = State.NEW;
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
