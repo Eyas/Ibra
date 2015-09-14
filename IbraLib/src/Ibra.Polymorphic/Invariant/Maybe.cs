@@ -20,9 +20,12 @@ namespace Ibra.Polymorphic.Invariant
     /// 
     /// As an invariant type, Maybe(T) cannot be used covariantly. Use the Maybe.Vary
     /// extension method to convert a Maybe(T) to a Maybe(Super Type).
+    /// 
+    /// Invariant Maybe(T) types support Equality semantics and can be used as keys in
+    /// a HashSet or Dictionary.
     /// </remarks>
     /// <typeparam name="T">The type that could be held by this instnace.</typeparam>
-    public struct Maybe<T>
+    public struct Maybe<T> : IEquatable<Maybe<T>>
     {
         /// <summary>
         /// Represents a Maybe(<typeparamref name="T"/>) with no value.
@@ -164,8 +167,36 @@ namespace Ibra.Polymorphic.Invariant
         /// <typeparam name="T">Contained type</typeparam>
         public T GetOrElse(Func<T> nothingFunc) => _hasValue ? _value : nothingFunc();
 
+        /// <summary>
+        /// Indicates if this Maybe<typeparamref name="T"/>) contains a value
+        /// and that value is equal to <paramref name="other"/>.
+        /// </summary>
+        public bool JustEquals(T other) => _hasValue && _value.Equals(other);
+
+        /// <summary>
+        /// Two invariant Maybe(<typeparamref name="T"/>) are Equal if and
+        /// only if they are: both Nothing, or both contain values that are
+        /// themselves equal.
+        /// </summary>
+        public bool Equals(Maybe<T> other)
+        {
+            if (!_hasValue && !other._hasValue) return true;
+            if (!_hasValue || !other._hasValue) return false;
+            return _value.Equals(other._value);
+        }
+        public override bool Equals(object obj) => As<Maybe<T>>(obj)?.Equals(this) ?? false;
+        public override int GetHashCode() => _hasValue ? _value.GetHashCode() : 0;
+        public static bool operator ==(Maybe<T> first, Maybe<T> second) => first.Equals(second);
+        public static bool operator !=(Maybe<T> first, Maybe<T> second) => !(first == second);
+
         private readonly bool _hasValue;
         private readonly T _value;
+
+        private static A? As<A>(object obj) where A : struct
+        {
+            if (obj is A) return (A)obj;
+            else return null;
+        }
     }
 
     public static class Maybe
@@ -183,6 +214,16 @@ namespace Ibra.Polymorphic.Invariant
             from.HasValue
             ? new Maybe<TTo>(from.Value)
             : Maybe<TTo>.Nothing;
+
+        /// <summary>
+        /// Converts a Maybe(<paramref name="T"/>) to a <paramref name="T"/>?
+        /// nullable object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public static T? ToNullable<T>(this Maybe<T> from) where T : struct =>
+            from.HasValue ? from.Value : (T?)null;
 
     }
 }

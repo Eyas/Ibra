@@ -301,5 +301,63 @@ namespace IbraTests.Polymorphic.Invariant
             Assert.Equal("15", Maybe.Just("15").GetOrElse(() => { Assert.False(true, "Expected unreached"); return ""; }));
             Assert.Equal("0", Maybe.Just("0").GetOrElse(() => { Assert.False(true, "Expected unreached"); return ""; }));
         }
+
+        [Fact]
+        void Equals_Nothing_Nothing_TrueSameType()
+        {
+            Assert.True(Maybe<string>.Nothing.Equals(Maybe<string>.Nothing));
+            Assert.True(Maybe<object>.Nothing.Equals(Maybe<object>.Nothing));
+            Assert.True(Maybe<int>.Nothing.Equals(Maybe<int>.Nothing));
+
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe<object>.Nothing));
+            Assert.False(Maybe<object>.Nothing.Equals(Maybe<string>.Nothing));
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe<int>.Nothing));
+
+            Assert.True(Maybe<string>.Nothing.Equals(Maybe<string>.Nothing as object));
+            Assert.True(Maybe<object>.Nothing.Equals(Maybe<object>.Nothing as object));
+            Assert.True(Maybe<int>.Nothing.Equals(Maybe<int>.Nothing as object));
+
+            Assert.False(Maybe<int>.Nothing.Equals(null));
+        }
+
+        [Fact]
+        void Equals_Nothing_Just_AlwaysFalse()
+        {
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just("something")));
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just("")));
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just(5)));
+            Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just("") as object));
+
+            Assert.False(Maybe<int>.Nothing.Equals(Maybe.Just("something")));
+            Assert.False(Maybe<int>.Nothing.Equals(Maybe.Just("")));
+            Assert.False(Maybe<int>.Nothing.Equals(Maybe.Just(5)));
+            Assert.False(Maybe<int>.Nothing.Equals(Maybe.Just("") as object));
+        }
+
+        [Fact]
+        void Equals_JustDifferent_False()
+        {
+            Assert.False(Maybe.Just("nothing").Equals(Maybe.Just("something")));
+            Assert.False(Maybe.Just("nothing").Equals(Maybe.Just("something") as object));
+            Assert.False(Maybe.Just("nothing").Equals(Maybe.Just(5)));
+            Assert.False(Maybe.Just("nothing").Equals(Maybe.Just(5 as object)));
+            Assert.False(Maybe.Just("nothing").Equals(Maybe.Just("nothing" as object)));
+
+            Assert.False(Maybe.Just(6).Equals(Maybe.Just("something")));
+            Assert.False(Maybe.Just(6).Equals(Maybe.Just("something") as object));
+            Assert.False(Maybe.Just(6).Equals(Maybe.Just(5)));
+            Assert.False(Maybe.Just(6).Equals(Maybe.Just(5 as object)));
+            Assert.False(Maybe.Just(6).Equals(Maybe.Just("nothing" as object)));
+        }
+
+        [Fact]
+        void Equals_JustEqual_True()
+        {
+            Assert.True(Maybe.Just(6).Equals(Maybe.Just(6)));
+            Assert.True(Maybe.Just(6).Equals(Maybe.Just(6) as object));
+
+            Assert.True(Maybe.Just("something").Equals(Maybe.Just("something")));
+            Assert.True(Maybe.Just("something").Equals(Maybe.Just("something") as object));
+        }
     }
 }

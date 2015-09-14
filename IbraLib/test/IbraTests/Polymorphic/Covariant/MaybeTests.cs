@@ -9,6 +9,7 @@ namespace IbraTests.Polymorphic.Covariant
 {
     public class MaybeTests
     {
+
         [Fact]
         void Nothing_AlwaysThrows()
         {
@@ -299,6 +300,46 @@ namespace IbraTests.Polymorphic.Covariant
             Assert.Equal("5", Maybe.Just("5").GetOrElse(() => { Assert.False(true, "Expected unreached"); return ""; }));
             Assert.Equal("15", Maybe.Just("15").GetOrElse(() => { Assert.False(true, "Expected unreached"); return ""; }));
             Assert.Equal("0", Maybe.Just("0").GetOrElse(() => { Assert.False(true, "Expected unreached"); return ""; }));
+        }
+
+        [Fact]
+        void MaybeEqual_Nothing_Nothing_AlwaysTrue()
+        {
+            Assert.True(Maybe.MaybeEqual(Nothing<string>.Instance, Nothing<string>.Instance));
+            Assert.True(Maybe.MaybeEqual(Nothing<string>.Instance, Nothing<object>.Instance));
+            Assert.True(Maybe.MaybeEqual(Nothing<object>.Instance, Nothing<string>.Instance));
+            Assert.True(Maybe.MaybeEqual(Nothing<int>.Instance, Nothing<string>.Instance));
+            Assert.True(Maybe.MaybeEqual(Nothing<string>.Instance, Nothing<int>.Instance));
+            Assert.True(Maybe.MaybeEqual(Nothing<int>.Instance, Nothing<int>.Instance));
+        }
+
+        [Fact]
+        void MaybeEqual_Nothing_Just_AlwaysFalse()
+        {
+            Assert.False(Maybe.MaybeEqual(Nothing<string>.Instance, Maybe.Just("")));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(""), Nothing<string>.Instance));
+            Assert.False(Maybe.MaybeEqual(Nothing<int>.Instance, Maybe.Just("")));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(""), Nothing<int>.Instance));
+            Assert.False(Maybe.MaybeEqual(Nothing<string>.Instance, Maybe.Just(5)));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(5), Nothing<string>.Instance));
+            Assert.False(Maybe.MaybeEqual(Nothing<int>.Instance, Maybe.Just(5)));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(5), Nothing<int>.Instance));
+        }
+
+        [Fact]
+        void MaybeEqual_JustDifferent_False()
+        {
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(5), Maybe.Just(6)));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just(5), Maybe.Just("5")));
+            Assert.False(Maybe.MaybeEqual(Maybe.Just("5"), Maybe.Just("6")));
+        }
+
+        [Fact]
+        void MaybeEqual_JustEqual_True()
+        {
+            Assert.True(Maybe.MaybeEqual(Maybe.Just(5), Maybe.Just(5)));
+            Assert.True(Maybe.MaybeEqual(Maybe.Just("5"), Maybe.Just("5")));
+            Assert.True(Maybe.MaybeEqual(Maybe.Just(5), Maybe.Just<object>(5)));
         }
     }
 }

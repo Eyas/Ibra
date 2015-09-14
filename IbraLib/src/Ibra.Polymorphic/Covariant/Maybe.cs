@@ -17,6 +17,10 @@ namespace Ibra.Polymorphic.Covariant
     /// As a reference type, Maybe(T) is heap-allocated. Those wishing, for performance
     /// reasons, to reduce allocations, should consider using the invariant Maybe type,
     /// which is a value type and as such stack allocated.
+    /// 
+    /// Covariant Maybe(T) does NOT support equality semantics out of the box and cannot
+    /// be used as a key in a HashSet or Dictionary. To compare two covariant Maybe types,
+    /// use static helper method Maybe.MaybeEqual{T1, T2}(Maybe{T1}, Maybe{T2}).
     /// </remarks>
     /// <typeparam name="T">The type that could be present in this object</typeparam>
     public interface Maybe<out T>
@@ -160,6 +164,30 @@ namespace Ibra.Polymorphic.Covariant
     public static class Maybe
     {
         /// <summary>
+        /// Indicates that two Maybe instances are equal if and only of:
+        /// <list type="bullet">
+        /// <item><description>
+        /// both Maybe instances hold no value, regardless of their type, or
+        /// </description></item>
+        /// <item><description>
+        /// both Maybe instances hold a value, and their values are Equal
+        /// </description></item>
+        /// </list>
+        /// </summary>
+        public static bool MaybeEqual<T1, T2>(Maybe<T1> lhs, Maybe<T2> rhs)
+        {
+            if (!lhs.HasValue && !rhs.HasValue) return true;
+            if (!lhs.HasValue || !rhs.HasValue) return false;
+            return lhs.Value.Equals(rhs.Value);
+        }
+
+        /// <summary>
+        /// Returns true if and only if this Maybe(T) type has a value
+        /// and that value is equal <paramref name="other"/>.
+        /// </summary>
+        public static bool JustEquals<T>(this Maybe<T> maybe, T other) => maybe.Convert(v => v.Equals(other), false);
+
+        /// <summary>
         /// Get the contained value of a Maybe polymorphic type if it is
         /// present, or <paramref name="defaultValue"/> otherwise.
         /// </summary>
@@ -192,5 +220,16 @@ namespace Ibra.Polymorphic.Covariant
         public static Maybe<T> Map<T, EA, EB, EC>(
             this Maybe<Either<EA, EB, EC>> maybe, Func<EA, T> mapA, Func<EB, T> mapB, Func<EC, T> mapC) =>
             maybe.Map(either => either.Map(mapA, mapB, mapC));
+
+        /// <summary>
+        /// Converts a Maybe(<paramref name="T"/>) to a <paramref name="T"/>?
+        /// nullable object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public static T? ToNullable<T>(this Maybe<T> from) where T : struct =>
+            from.HasValue ? from.Value : (T?)null;
     }
+
 }
