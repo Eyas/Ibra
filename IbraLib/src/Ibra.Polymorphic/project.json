@@ -1,6 +1,6 @@
 {
   "title": "Ibra.Polymorphic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides support polymorphic types in C#, such as Covariant and Invariant Maybe (Optional) types, and type unions.",
   "summary": "Ibra.Polymorphic Class Library",
   "authors": [ "Eyas" ],

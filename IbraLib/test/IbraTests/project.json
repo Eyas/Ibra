@@ -16,7 +16,7 @@
     "Ibra.Comparers": "1.0.1",
     "Ibra.Enumerables": "1.0.0-*",
     "Ibra.Lazy": "1.0.0",
-    "Ibra.Polymorphic": "1.0.0"
+    "Ibra.Polymorphic": "1.0.1"
   },
 
   "commands": {
