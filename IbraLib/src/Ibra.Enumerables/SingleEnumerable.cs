@@ -11,15 +11,7 @@ namespace Ibra.Enumerables
             private bool _traversed;
             private readonly SingleEnumerable<T> _enumerable;
 
-            public T Current
-            {
-                get
-                {
-                    if (_traversed) return _enumerable._element;
-                    else throw new NotSupportedException();
-                }
-            }
-
+            public T Current => _enumerable._element;
             object IEnumerator.Current => Current;
 
             public SingleEnumeratorOnly(SingleEnumerable<T> e)
@@ -53,14 +45,7 @@ namespace Ibra.Enumerables
             _state = State.NEW;
         }
 
-        public T Current
-        {
-            get
-            {
-                if (_state == State.MOVED) return _element;
-                else throw new NotSupportedException();
-            }
-        }
+        public T Current => _element;
 
         public int Count => 1;
 
