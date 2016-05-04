@@ -91,10 +91,10 @@ namespace Ibra.Comparers
         {
             if (a == b) return 0;
             if (a == null) return -1;
-            if (b == null) return  1;
+            if (b == null) return 1;
 
             int ca = a.Count, cb = b.Count;
-            if (ca > cb) return  1;
+            if (ca > cb) return 1;
             if (cb > ca) return -1;
 
             for (int i = 0; i < ca; ++i)
@@ -154,7 +154,7 @@ namespace Ibra.Comparers
 
             return
                 (ca == cb) ? 0 :
-                (ca >  cb) ? 1 : -1;
+                (ca > cb) ? 1 : -1;
         }
         private readonly IComparer<T> _cmp;
     }

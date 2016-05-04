@@ -1,24 +1,16 @@
-{
-    "title": "Ibra.Lazy",
-    "version": "1.0.0",
-    "description": "Provides support for cached, memoized functions, that return the same value for repeated invocations with the same parameters. Inspired by C#'s System.Lazy class.",
-    "summary": "Ibra.Lazy Class Library",
-    "authors": [ "Eyas" ],
-    "tags": [ "lazy", "memoized", "memoization", "caching" ],
-    "projectUrl": "https://github.com/Eyas/Ibra",
-    "licenseUrl": "https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE",
-    "iconUrl": "http://eyas.sh/images/nuget/IbraIcon.png",
-
-    "dependencies": {
-        "System.Runtime": "4.0.20",
-        "System.Collections": "4.0.10"
-    },
-
-    "frameworks": {
-        "dotnet": { },
-        "dnxcore50": { },
-        "dnx46": { },
-        "net46": { },
-        "netcore50": { }
+﻿{
+  "supports": {
+    "net46.app": {},
+    "uwp.10.0.app": {},
+    "dnxcore50.app": {}
+  },
+  "dependencies": {
+    "Microsoft.NETCore": "5.0.0",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.0"
+  },
+  "frameworks": {
+    "dotnet": {
+      "imports": "portable-net452+win81"
     }
+  }
 }
