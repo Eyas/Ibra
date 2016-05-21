@@ -39,6 +39,7 @@ namespace Ibra.Polymorphic.Covariant
         /// <remarks>
         /// Access to Value must be restricted to logic that is conditional on HasValue
         /// </remarks>
+        [Obsolete("Direct use of Maybe<T>.Value is deprecated. Use Map, FlatMap, Convert, or Do instead.")]
         T Value { get; }
 
         /// <summary>
@@ -122,6 +123,9 @@ namespace Ibra.Polymorphic.Covariant
         /// matches Value, or otherwise a Nothing(<typeparamref name="T"/>).
         /// </returns>
         Maybe<T> Filter(Predicate<T> filter);
+        
+        void Do(Action<T> justFunc);
+        void Do(Action<T> justFunc, Action nothingFunc);
     }
 
     public class Just<T> : Maybe<T>
@@ -130,6 +134,7 @@ namespace Ibra.Polymorphic.Covariant
 
         public bool HasValue => true;
         public T Value => _value;
+        T Maybe<T>.Value => _value;
 
         public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new Just<TResult>(mapper(_value));
         public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => mapper(_value);
@@ -139,6 +144,14 @@ namespace Ibra.Polymorphic.Covariant
         {
             if (filter(_value)) return this;
             else return Nothing<T>.Instance;
+        }
+        public void Do(Action<T> justFunc)
+        {
+            justFunc(_value);
+        }
+        public void Do(Action<T> justFunc, Action nothingFunc)
+        {
+            justFunc(_value);
         }
 
         private readonly T _value;
@@ -151,13 +164,18 @@ namespace Ibra.Polymorphic.Covariant
         private Nothing() { }
 
         public bool HasValue => false;
-        public T Value { get { throw new NotSupportedException($"Attempting to access {nameof(Value)} on a {nameof(Nothing<T>)}."); } }
+        T Maybe<T>.Value { get { throw new NotSupportedException($"Attempting to access `Value` on a {nameof(Nothing<T>)}."); } }
 
         public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => Nothing<TResult>.Instance;
         public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => Nothing<TResult>.Instance;
         public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => nothingFunc();
         public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => nothing;
         public Maybe<T> Filter(Predicate<T> filter) => this;
+        public void Do(Action<T> justFunc) { }
+        public void Do(Action<T> justFunc, Action nothingFunc)
+        {
+            nothingFunc();
+        }
 
     }
 
@@ -178,7 +196,7 @@ namespace Ibra.Polymorphic.Covariant
         {
             if (!lhs.HasValue && !rhs.HasValue) return true;
             if (!lhs.HasValue || !rhs.HasValue) return false;
-            return lhs.Value.Equals(rhs.Value);
+            return ((Just<T1>)lhs).Value.Equals(((Just<T2>)rhs).Value);
         }
 
         /// <summary>
@@ -192,7 +210,7 @@ namespace Ibra.Polymorphic.Covariant
         /// present, or <paramref name="defaultValue"/> otherwise.
         /// </summary>
         /// <typeparam name="T">Contained type</typeparam>
-        public static T GetOrElse<T>(this Maybe<T> maybe, T defaultValue) => maybe.HasValue ? maybe.Value : defaultValue;
+        public static T GetOrElse<T>(this Maybe<T> maybe, T defaultValue) => maybe.HasValue ? ((Just<T>)maybe).Value : defaultValue;
 
         /// <summary>
         /// Get the contained value of a Maybe polymorphic type if it is
@@ -200,7 +218,7 @@ namespace Ibra.Polymorphic.Covariant
         /// otherwise.
         /// </summary>
         /// <typeparam name="T">Contained type</typeparam>
-        public static T GetOrElse<T>(this Maybe<T> maybe, Func<T> nothingFunc) => maybe.HasValue ? maybe.Value : nothingFunc();
+        public static T GetOrElse<T>(this Maybe<T> maybe, Func<T> nothingFunc) => maybe.HasValue ? ((Just<T>)maybe).Value : nothingFunc();
 
         /// <summary>
         /// Get a Maybe type out of a definite value.
@@ -229,7 +247,7 @@ namespace Ibra.Polymorphic.Covariant
         /// <param name="from"></param>
         /// <returns></returns>
         public static T? ToNullable<T>(this Maybe<T> from) where T : struct =>
-            from.HasValue ? from.Value : (T?)null;
+            from.Convert(v => (T?)v, () => (T?)null);
     }
 
 }

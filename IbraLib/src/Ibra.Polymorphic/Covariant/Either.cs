@@ -22,8 +22,8 @@ namespace Ibra.Polymorphic.Covariant
 
         public static Either<A, B> Either<A, B>(Maybe<A> a, Maybe<B> b)
         {
-            if (a.HasValue) return Either<A, B>(a.Value);
-            else if (b.HasValue) return Either<A, B>(b.Value);
+            if (a.HasValue) return Either<A, B>(((Just<A>)a).Value);
+            else if (b.HasValue) return Either<A, B>(((Just<B>)b).Value);
             else throw new ArgumentException("There is no value contained in any of the passed arguments.");
         }
 
@@ -48,9 +48,9 @@ namespace Ibra.Polymorphic.Covariant
 
         public static Either<A, B, C> Either<A, B, C>(Maybe<A> a, Maybe<B> b, Maybe<C> c)
         {
-            if (a.HasValue) return Either<A, B, C>(a.Value);
-            else if (b.HasValue) return Either<A, B, C>(b.Value);
-            else if (c.HasValue) return Either<A, B, C>(c.Value);
+            if (a.HasValue) return Either<A, B, C>(((Just<A>)a).Value);
+            else if (b.HasValue) return Either<A, B, C>(((Just<B>)b).Value);
+            else if (c.HasValue) return Either<A, B, C>(((Just<C>)c).Value);
             else throw new ArgumentException("There is no value contained in any of the passed arguments.");
         }
 
