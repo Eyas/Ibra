@@ -1,0 +1,55 @@
+{
+  "title": "IbraTests",
+  "version": "1.0.0-*",
+  "description": "",
+  "authors": [ "Eyas" ],
+  
+  "buildOptions": {
+    "nowarn": [ "CS0618" ]
+  },
+
+  "dependencies": {
+
+    "Ibra.Comparers": "1.0.1",
+    "Ibra.Enumerables": "1.0.0",
+    "Ibra.Lazy": "1.0.0",
+    "Ibra.Polymorphic": "1.0.1",
+    
+    "Microsoft.NETCore.TestHost": "1.0.0-*",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.0-*"
+    },
+   
+    "Xunit": "2.1.0",
+    "dotnet-test-xunit": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "netstandardapp1.5",
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
+    }
+  },
+
+  "testRunner": "xunit",
+  
+  "runtimes": {
+    "win10-x64": {},
+    "win10-x86": {},
+    "win81-x64": {},
+    "win81-x86": {},
+    "win8-x64": {},
+    "win8-x86": {},
+    "win7-x86": {},
+    "win7-x64": {},
+    "ubuntu.14.04-x64": {},
+    "osx.10.10-x64": {},
+    "centos.7-x64": {},
+    "rhel.7-x64": {},
+    "debian.8.2-x64": {}
+  }
+}

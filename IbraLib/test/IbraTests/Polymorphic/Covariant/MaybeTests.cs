@@ -23,10 +23,11 @@ namespace IbraTests.Polymorphic.Covariant
             Assert.False(rt1.HasValue);
             Assert.False(rt2.HasValue);
 
-            Assert.Throws<NotSupportedException>(() => vt1.Value);
-            Assert.Throws<NotSupportedException>(() => vt2.Value);
-            Assert.Throws<NotSupportedException>(() => rt1.Value);
-            Assert.Throws<NotSupportedException>(() => rt2.Value);
+            // testing obsolete methods
+            Assert.Throws<NotSupportedException>(() => ((Maybe<int>)vt1).Value);
+            Assert.Throws<NotSupportedException>(() => ((Maybe<KeyValuePair<int, double>>)vt2).Value);
+            Assert.Throws<NotSupportedException>(() => ((Maybe<string>)rt1).Value);
+            Assert.Throws<NotSupportedException>(() => ((Maybe<object>)rt2).Value);
         }
 
         [Fact]

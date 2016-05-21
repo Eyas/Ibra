@@ -17,7 +17,8 @@ namespace Ibra.Polymorphic.Covariant.Extensions
         {
             foreach (var maybe in sequence)
             {
-                if (maybe.HasValue) yield return maybe.Value;
+                Just<T> just = maybe as Just<T>;
+                if (just != null) yield return just.Value;
             }
         }
 
@@ -25,7 +26,7 @@ namespace Ibra.Polymorphic.Covariant.Extensions
             => sequence.Select(func).Flatten();
 
         public static IEnumerable<T> AppendMaybe<T>(this IEnumerable<T> sequence, Maybe<T> maybe)
-            => maybe.HasValue ? sequence.Concat(One(maybe.Value)) : sequence;
+            => maybe.HasValue ? sequence.Concat(One(((Just<T>)maybe).Value)) : sequence;
 
         public static Maybe<T> FirstMaybe<T>(this IEnumerable<T> sequence)
         {
