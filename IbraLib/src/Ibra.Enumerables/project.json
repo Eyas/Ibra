@@ -13,7 +13,7 @@
   },
 
   "dependencies": {
-    "Ibra.Polymorphic": "1.0.1",
+    "Ibra.Polymorphic": "1.1.0-alpha",
     "System.Runtime": "4.0.20",
     "System.Linq": "4.0.0"
   },
