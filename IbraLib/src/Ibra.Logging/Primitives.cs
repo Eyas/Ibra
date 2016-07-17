@@ -15,8 +15,6 @@ namespace Ibra.Logging
 
     public class Source : System.IEquatable<Source>
     {
-        private static readonly int g_lastId;
-
         public readonly string Name;
         internal readonly int Index;
         internal readonly Logger Owner;
