@@ -25,13 +25,21 @@ namespace Ibra.Logging
             Source source, Level level,
             [System.Runtime.CompilerServices.CallerMemberName] string context = "")
         => _staticLogger.Value.Log(source, level, context);
+        public static Source ALL => _staticLogger.Value.ALL;
     }
 
     public class Logger
     {
+        public readonly Source ALL;
+        private readonly List<SourceRoutes> _logLevels;
+        private readonly Dictionary<string, Source> _logSources;
 
-        private List<SourceRoutes> _logLevels = new List<SourceRoutes>();
-        private Dictionary<string, Source> _logSources = new Dictionary<string, Source>();
+        public Logger()
+        {
+        	ALL = new Source(nameof(ALL), this, -1);
+            _logLevels = new List<SourceRoutes>();
+        	_logSources = new Dictionary<string, Source>();
+        }
 
         public Source RegisterSource(string name)
         {
@@ -57,8 +65,19 @@ namespace Ibra.Logging
 
             if (level <= Level.NEVER) return;
 
-            SourceRoutes routes = _logLevels[source.Index];
-            routes.AddOutput(destination, level);
+            if (source.Index < 0)
+            {
+                // wildcard "all" source
+                foreach (SourceRoutes routes in _logLevels)
+                {
+                    routes.AddOutput(destination, level);
+                }
+            }
+            else
+            {
+                SourceRoutes routes = _logLevels[source.Index];
+                routes.AddOutput(destination, level);
+            }
         }
 
         public LogWriter? Log(
@@ -67,6 +86,8 @@ namespace Ibra.Logging
         {
             if (source.Owner != this || source.Index >= _logLevels.Count)
                 throw new LoggingException($"Source {source} not recognized.");
+            if (source.Index < 0)
+                throw new LoggingException($"Wildcard source {source} cannot be used to write to log.");
 
             SourceRoutes routes = _logLevels[source.Index];
             if (routes.MaxVerbosity >= level)
