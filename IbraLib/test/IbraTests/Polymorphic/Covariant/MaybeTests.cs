@@ -7,6 +7,8 @@ using Xunit;
 
 namespace IbraTests.Polymorphic.Covariant
 {
+    #pragma warning disable CS0618
+
     public class MaybeTests
     {
 
