@@ -1,6 +1,6 @@
 {
   "title": "Ibra.Logging",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0-alpha1",
   "description": "Provides support for simple fluent logging that is lazily evaluated/printed when enabled.",
   "authors": [ "Eyas" ],
   
@@ -11,20 +11,15 @@
     "licenseUrl": "https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE",
     "iconUrl": "http://eyas.sh/images/nuget/IbraIcon.png"
   },
-
-  "dependencies": {
-    "System.Runtime": "4.0.0",
-    "System.IO": "4.0.0",
-    "System.Collections": "4.0.0",
-    "System.Threading": "4.0.0"
-  },
-
   "frameworks": {
     "netstandard1.0": {
-      "imports": ["dotnet5.1"]
-    },
-    "dotnet": {
-      "imports": ["portable-net45+win8+wp8+wpa81"]
+      "imports": ["dotnet5.1"],
+      "dependencies": {
+        "System.Runtime": "4.0.0",
+        "System.IO": "4.0.0",
+        "System.Collections": "4.0.0",
+        "System.Threading": "4.0.0"
+      }
     }
   }
 

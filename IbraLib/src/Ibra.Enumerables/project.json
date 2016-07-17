@@ -1,6 +1,6 @@
 ﻿{
   "title": "Ibra.Enumerables",
-  "version": "1.0.1-alpha",
+  "version": "1.0.1-alpha1",
   "description": "LINQ-like helpers and extension methods for IEnumerable. Type filters, Option-type conversions, flattening enumerables, fast single-element enumerables, and others.",
   "authors": [ "Eyas" ],
 
@@ -13,17 +13,16 @@
   },
 
   "dependencies": {
-    "Ibra.Polymorphic": "1.1.0-alpha",
-    "System.Runtime": "4.0.20",
-    "System.Linq": "4.0.0"
+    "Ibra.Polymorphic": "1.1.0-alpha1"
   },
 
   "frameworks": {
     "netstandard1.0": {
-      "imports": ["dotnet5.1"]
-    },
-    "dotnet": {
-      "imports": ["portable-net45+win8+wp8+wpa81"]
+      "imports": ["dotnet5.1"],
+      "dependencies": {
+        "System.Runtime": "4.0.20",
+        "System.Linq": "4.0.0"
+      }
     }
   }
 }
