@@ -1,6 +1,6 @@
 ﻿{
   "title": "Ibra.Polymorphic",
-  "version": "1.1.0-alpha1",
+  "version": "1.1.0-alpha2",
   "description": "Provides support polymorphic types in C#, such as Covariant and Invariant Maybe (Optional) types, and type unions.",
   "authors": [ "Eyas" ],
   
@@ -14,9 +14,8 @@
 
   "frameworks": {
     "netstandard1.0": {
-      "imports": ["dotnet5.1"],
       "dependencies": {
-        "System.Runtime": "4.0.0"
+        "System.Runtime": "4.1.0"
       }
     }
   }

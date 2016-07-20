@@ -1,9 +1,9 @@
 {
   "title": "Ibra.Logging",
-  "version": "1.0.0-alpha1",
+  "version": "1.0.0-alpha2",
   "description": "Provides support for simple fluent logging that is lazily evaluated/printed when enabled.",
   "authors": [ "Eyas" ],
-  
+
   "packOptions": {
     "summary": "Ibra.Logging Class Library",
     "tags": [ "logger", "log", "logging", "lazy" ],
@@ -13,12 +13,11 @@
   },
   "frameworks": {
     "netstandard1.0": {
-      "imports": ["dotnet5.1"],
       "dependencies": {
-        "System.Runtime": "4.0.0",
-        "System.IO": "4.0.0",
-        "System.Collections": "4.0.0",
-        "System.Threading": "4.0.0"
+        "System.Runtime": "4.1.0",
+        "System.IO": "4.1.0",
+        "System.Collections": "4.0.11",
+        "System.Threading": "4.0.11"
       }
     }
   }
