@@ -371,7 +371,7 @@ namespace Ibra.Polymorphic.Covariant
             // C# 7:
             // if (tryer is Failure<TResult> f && f.Exception is TException e)
             var e = (tryer as Failure<TResult>)?.Exception as TException;
-            if (e != null) catcher.Try(e);
+            if (e != null) return catcher.Try(e);
             
             return tryer;
         }
