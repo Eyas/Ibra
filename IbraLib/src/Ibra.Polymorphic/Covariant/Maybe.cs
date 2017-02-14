@@ -128,15 +128,22 @@ namespace Ibra.Polymorphic.Covariant
         void Do(Action<T> justFunc, Action nothingFunc);
     }
 
-    public class Just<T> : Maybe<T>
+    public interface Just<out T> : Maybe<T>
     {
-        public Just(T value) { _value = value; }
+        new T Value { get; }
+    }
+
+
+    /// Concrete implementation of the `Just` covariant interface.
+    internal class CJust<T> : Just<T>
+    {
+        public CJust(T value) { _value = value; }
 
         public bool HasValue => true;
         public T Value => _value;
         T Maybe<T>.Value => _value;
 
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new Just<TResult>(mapper(_value));
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new CJust<TResult>(mapper(_value));
         public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => mapper(_value);
         public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => justFunc(_value);
         public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => justFunc(_value);
@@ -224,7 +231,7 @@ namespace Ibra.Polymorphic.Covariant
         /// Get a Maybe type out of a definite value.
         /// </summary>
         /// <typeparam name="T">The type of the definite value</typeparam>
-        public static Just<T> Just<T>(T value) => new Just<T>(value);
+        public static Just<T> Just<T>(T value) => new CJust<T>(value);
 
         /// <summary>
         /// Map a Maybe of a discriminated union into a Maybe of some type

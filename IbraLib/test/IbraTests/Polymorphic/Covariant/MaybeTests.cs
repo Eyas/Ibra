@@ -344,5 +344,22 @@ namespace IbraTests.Polymorphic.Covariant
             Assert.True(Maybe.MaybeEqual(Maybe.Just("5"), Maybe.Just("5")));
             Assert.True(Maybe.MaybeEqual(Maybe.Just(5), Maybe.Just<object>(5)));
         }
+
+        interface IX {}
+        class CX : IX {}
+        class SX : CX {}
+
+        [Fact]
+        void PatternMatching()
+        {
+            Maybe<IX> m = Maybe.Just(new SX());
+            Assert.True(m is Just<IX>);
+            Assert.True(m is Just<CX>);
+            Assert.True(m is Just<SX>);
+
+            Assert.True(m is Just<IX> a && a.HasValue == true);
+            Assert.True(m is Just<CX> b && b.HasValue == true);
+            Assert.True(m is Just<SX> c && c.HasValue == true);
+        }
     }
 }
