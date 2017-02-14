@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>LINQ-like helpers and extension methods for IEnumerable. Type filters, Option-type conversions, flattening enumerables, fast single-element enumerables, and others.</Description>
+    <AssemblyTitle>Ibra.Enumerables</AssemblyTitle>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <Authors>Eyas</Authors>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <AssemblyName>Ibra.Enumerables</AssemblyName>
+    <PackageId>Ibra.Enumerables</PackageId>
+    <PackageTags>linq;enumerable;IEnumerable;option;maybe;flatten;combine;single;casts</PackageTags>
+    <PackageIconUrl>http://eyas.sh/images/nuget/IbraIcon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ibra.Polymorphic\Ibra.Polymorphic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+    <PackageReference Include="System.Runtime" Version="4.1.0" />
+    <PackageReference Include="System.Linq" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>

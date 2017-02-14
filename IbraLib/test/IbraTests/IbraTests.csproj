@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>IbraTests</AssemblyTitle>
+    <Authors>Eyas</Authors>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <NoWarn>$(NoWarn);CS0618</NoWarn>
+    <AssemblyName>IbraTests</AssemblyName>
+    <PackageId>IbraTests</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RuntimeFrameworkVersion>1.0.3</RuntimeFrameworkVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);netstandardapp1.5;dotnet5.4;portable-net451+win8</PackageTargetFallback>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ibra.Comparers\Ibra.Comparers.csproj" />
+    <ProjectReference Include="..\..\src\Ibra.Enumerables\Ibra.Enumerables.csproj" />
+    <ProjectReference Include="..\..\src\Ibra.Lazy\Ibra.Lazy.csproj" />
+    <ProjectReference Include="..\..\src\Ibra.Polymorphic\Ibra.Polymorphic.csproj" />
+    <ProjectReference Include="..\..\src\Ibra.Logging\Ibra.Logging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
+    <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+</Project>

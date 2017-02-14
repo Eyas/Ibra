@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides support for cached, memoized functions, that return the same value for repeated invocations with the same parameters. Inspired by C#'s System.Lazy class.</Description>
+    <AssemblyTitle>Ibra.Lazy</AssemblyTitle>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <Authors>Eyas</Authors>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <AssemblyName>Ibra.Lazy</AssemblyName>
+    <PackageId>Ibra.Lazy</PackageId>
+    <PackageTags>lazy;memoized;memoization;caching</PackageTags>
+    <PackageIconUrl>http://eyas.sh/images/nuget/IbraIcon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+    <PackageReference Include="System.Runtime" Version="4.1.0" />
+    <PackageReference Include="System.Collections" Version="4.0.11" />
+  </ItemGroup>
+
+</Project>
