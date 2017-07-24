@@ -18,9 +18,4 @@
     <ProjectReference Include="..\Ibra.Polymorphic\Ibra.Polymorphic.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <PackageReference Include="System.Runtime" Version="4.1.0" />
-    <PackageReference Include="System.Linq" Version="4.1.0" />
-  </ItemGroup>
-
 </Project>

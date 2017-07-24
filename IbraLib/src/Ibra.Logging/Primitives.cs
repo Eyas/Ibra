@@ -25,14 +25,9 @@ namespace Ibra.Logging
             Index = id;
             Owner = owner;
         }
-        public bool Equals(Source other) => Index == other.Index && object.ReferenceEquals(Owner, other.Owner);
-        public override bool Equals(object other)
-        {
-            Source s = other as Source;
-            if (s != null) {
-                return Equals(s);
-            } else return false;
-        }
+        public bool Equals(Source other) => Index == other.Index && ReferenceEquals(Owner, other.Owner);
+        public override bool Equals(object other) => other is Source s && Equals(s);
+
         public override int GetHashCode() => Index.GetHashCode();
         public override string ToString() => Name;
     }

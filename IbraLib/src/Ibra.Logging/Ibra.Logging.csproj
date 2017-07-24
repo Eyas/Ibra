@@ -14,11 +14,4 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-    <PackageReference Include="System.Runtime" Version="4.1.0" />
-    <PackageReference Include="System.IO" Version="4.1.0" />
-    <PackageReference Include="System.Collections" Version="4.0.11" />
-    <PackageReference Include="System.Threading" Version="4.0.11" />
-  </ItemGroup>
-
 </Project>
