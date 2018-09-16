@@ -52,9 +52,9 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         void Nothing_Map_HasNoEffect()
         {
-            Func<int, int> iiMap = (x) => { Assert.True(false, "Expected this is unreached."); return x; };
-            Func<int, string> isMap = (x) => { Assert.True(false, "Expected this is unreached."); return x.ToString(); };
-            Func<string, object> soMap = (x) => { Assert.True(false, "Expected this is unreached."); return null; };
+            int iiMap(int x) { Assert.True(false, "Expected this is unreached."); return x; }
+            string isMap(int x) { Assert.True(false, "Expected this is unreached."); return x.ToString(); }
+            object soMap(string x) { Assert.True(false, "Expected this is unreached."); return null; }
 
             var iNothing = Maybe<int>.Nothing;
             var sNothing = Maybe<string>.Nothing;
@@ -75,9 +75,9 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         void Just_Map_HasEffect()
         {
-            Func<int, int> iiMap = (x) => x * 2;
-            Func<int, string> isMap = (x) => x.ToString();
-            Func<string, object> soMap = (x) => x;
+            int iiMap(int x) => x * 2;
+            string isMap(int x) => x.ToString();
+            object soMap(string x) => x;
 
             var i1 = Maybe.Just(3);
             var i2 = Maybe.Just(-483);
@@ -91,17 +91,17 @@ namespace IbraTests.Polymorphic.Invariant
             var ii2 = i2.Map(iiMap);
             var ii3 = i3.Map(iiMap);
 
-            Assert.True(ii1.HasValue); Assert.Equal(ii1.Value, 6);
+            Assert.True(ii1.HasValue); Assert.Equal(6, ii1.Value);
             Assert.True(ii2.HasValue); Assert.Equal(ii2.Value, -966);
-            Assert.True(ii3.HasValue); Assert.Equal(ii3.Value, 0);
+            Assert.True(ii3.HasValue); Assert.Equal(0, ii3.Value);
 
             var is1 = i1.Map(isMap);
             var is2 = i2.Map(isMap);
             var is3 = i3.Map(isMap);
 
-            Assert.True(is1.HasValue); Assert.Equal(is1.Value, "3");
-            Assert.True(is2.HasValue); Assert.Equal(is2.Value, "-483");
-            Assert.True(is3.HasValue); Assert.Equal(is3.Value, "0");
+            Assert.True(is1.HasValue); Assert.Equal("3", is1.Value);
+            Assert.True(is2.HasValue); Assert.Equal("-483", is2.Value);
+            Assert.True(is3.HasValue); Assert.Equal("0", is3.Value);
 
             var so1 = s1.Map(soMap);
             var so2 = s2.Map(soMap);
@@ -116,9 +116,9 @@ namespace IbraTests.Polymorphic.Invariant
         void Nothing_FlatMap_DoesntEven()
         {
             // when FlatMap'ing a Nothing.. you can't even!
-            Func<int, Maybe<int>> iiMap = (x) => { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x); };
-            Func<int, Maybe<string>> isMap = (x) => { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x.ToString()); };
-            Func<string, Maybe<object>> soMap = (x) => { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(null); };
+            Maybe<int> iiMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x); }
+            Maybe<string> isMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x.ToString()); }
+            Maybe<object> soMap(string x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(null); }
 
             var iNothing = Maybe<int>.Nothing;
             var sNothing = Maybe<string>.Nothing;
@@ -139,9 +139,9 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         void Anything_FlatMapWithNothing_CreatesNothing()
         {
-            Func<int, Maybe<int>> iiMap = (x) => Maybe<int>.Nothing;
-            Func<int, Maybe<string>> isMap = (x) => Maybe<string>.Nothing;
-            Func<string, Maybe<object>> soMap = (x) => Maybe<object>.Nothing;
+            Maybe<int> iiMap(int x) => Maybe<int>.Nothing;
+            Maybe<string> isMap(int x) => Maybe<string>.Nothing;
+            Maybe<object> soMap(string x) => Maybe<object>.Nothing;
 
             Maybe<int>[] int_maybes = new Maybe<int>[] { Maybe.Just(0), Maybe.Just(5), Maybe.Just(3282), Maybe.Just(-42), Maybe<int>.Nothing };
             foreach (Maybe<int> m in int_maybes)
@@ -212,7 +212,7 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         void Nothing_TrueFilter_DoesntEven()
         {
-            Predicate<int> cantEven = (o) => { Assert.True(false, "Expected unreached"); return true; };
+            bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
 
             var nInt = Maybe<int>.Nothing.Filter(cantEven);
 
@@ -223,24 +223,24 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         void Just_TrueFilter_Doesnt()
         {
-            Predicate<int> noEffect_int = (i) => true;
-            Predicate<string> noEffect_string = (i) => true;
+            bool noEffect_int(int i) => true;
+            bool noEffect_string(string i) => true;
 
             var mInt = Maybe.Just(150).Filter(noEffect_int);
             var mStr = Maybe.Just("5").Filter(noEffect_string);
 
             Assert.True(mInt.HasValue);
-            Assert.Equal(mInt.Value, 150);
+            Assert.Equal(150, mInt.Value);
 
             Assert.True(mStr.HasValue);
-            Assert.Equal(mStr.Value, "5");
+            Assert.Equal("5", mStr.Value);
         }
 
         [Fact]
         void Just_FalseFilter_Filters()
         {
-            Predicate<int> iFilter = (i) => false;
-            Predicate<string> sFilter = (i) => false;
+            bool iFilter(int i) => false;
+            bool sFilter(string i) => false;
 
             {
                 var nInt = Maybe.Just(5).Filter(iFilter);

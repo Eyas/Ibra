@@ -67,10 +67,10 @@ namespace IbraTests
                 return fibonacci[x - 1] + fibonacci[x - 2];
             });
 
-            Assert.Equal(fibonacci[19], 4181);
-            Assert.Equal(fibonacci[20], 6765);
-            Assert.Equal(fibonacci[11], 89);
-            Assert.Equal(fibonacci[7], 13);
+            Assert.Equal(4181, fibonacci[19]);
+            Assert.Equal(6765, fibonacci[20]);
+            Assert.Equal(89, fibonacci[11]);
+            Assert.Equal(13, fibonacci[7]);
         }
 
         [Fact]
@@ -92,11 +92,11 @@ namespace IbraTests
         {
             LazyFunc<int, int, int> adder = new LazyFunc<int, int, int>((a, b) => a + b);
 
-            Assert.Equal(adder.Get(0, 0), 0);
-            Assert.Equal(adder.Get(1, 0), 1);
-            Assert.Equal(adder.Get(0, 1), 1);
-            Assert.Equal(adder.Get(5, 3), 8);
-            Assert.Equal(adder.Get(3, 5), 8);
+            Assert.Equal(0, adder.Get(0, 0));
+            Assert.Equal(1, adder.Get(1, 0));
+            Assert.Equal(1, adder.Get(0, 1));
+            Assert.Equal(8, adder.Get(5, 3));
+            Assert.Equal(8, adder.Get(3, 5));
         }
 
         [Fact]
@@ -109,11 +109,11 @@ namespace IbraTests
                 return a + b;
             });
 
-            Assert.Equal(adder.Get(0, 0), 0);
-            Assert.Equal(adder.Get(1, 0), 1);
-            Assert.Equal(adder.Get(0, 1), 1);
-            Assert.Equal(adder.Get(5, 3), 8);
-            Assert.Equal(adder.Get(3, 5), 8);
+            Assert.Equal(0, adder.Get(0, 0));
+            Assert.Equal(1, adder.Get(1, 0));
+            Assert.Equal(1, adder.Get(0, 1));
+            Assert.Equal(8, adder.Get(5, 3));
+            Assert.Equal(8, adder.Get(3, 5));
         }
 
         [Fact]
