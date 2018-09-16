@@ -368,11 +368,8 @@ namespace Ibra.Polymorphic.Covariant
         public static Try<TResult> Catch<TResult, TException>(this Try<TResult> tryer, Func<TException, TResult> catcher)
             where TException : Exception
         {
-            // C# 7:
-            // if (tryer is Failure<TResult> f && f.Exception is TException e)
-            var e = (tryer as Failure<TResult>)?.Exception as TException;
-            if (e != null) return catcher.Try(e);
-            
+            if (tryer is Failure<TResult> f && f.Exception is TException e) return catcher.Try(e);
+
             return tryer;
         }
     }

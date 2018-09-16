@@ -59,9 +59,8 @@ namespace Ibra.Polymorphic.Invariant
         public Try<TResult> Catch<TException>(Func<TException, TResult> catcher)
             where TException : Exception
         {
-            TException te = _exception as TException;
-            if (te == null) return this;
-            return catcher.Try(te);
+            if (_exception is TException te) return catcher.Try(te);
+            return this;
         }
 
         /// <summary>

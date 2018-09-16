@@ -137,31 +137,29 @@ namespace Ibra.Polymorphic.Covariant
     /// Concrete implementation of the `Just` covariant interface.
     internal class CJust<T> : Just<T>
     {
-        public CJust(T value) { _value = value; }
+        public CJust(T value) { Value = value; }
 
         public bool HasValue => true;
-        public T Value => _value;
-        T Maybe<T>.Value => _value;
+        public T Value { get; }
+        T Maybe<T>.Value => Value;
 
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new CJust<TResult>(mapper(_value));
-        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => mapper(_value);
-        public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => justFunc(_value);
-        public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => justFunc(_value);
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new CJust<TResult>(mapper(Value));
+        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => mapper(Value);
+        public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => justFunc(Value);
+        public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => justFunc(Value);
         public Maybe<T> Filter(Predicate<T> filter)
         {
-            if (filter(_value)) return this;
+            if (filter(Value)) return this;
             else return Nothing<T>.Instance;
         }
         public void Do(Action<T> justFunc)
         {
-            justFunc(_value);
+            justFunc(Value);
         }
         public void Do(Action<T> justFunc, Action nothingFunc)
         {
-            justFunc(_value);
+            justFunc(Value);
         }
-
-        private readonly T _value;
     }
 
     public class Nothing<T> : Maybe<T>
