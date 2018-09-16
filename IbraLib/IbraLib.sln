@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IbraTests", "test\IbraTests\IbraTests.csproj", "{7BB66420-94B7-42BD-840A-4B41F72DA4CF}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Logging", "src\Ibra.Logging\Ibra.Logging.csproj", "{B68F55E2-6708-44DC-98E4-E7939BA852A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Polymorphic", "src\Ibra.Polymorphic\Ibra.Polymorphic.csproj", "{6E011F8A-9E96-4431-B3B9-D54929D757AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ibra.Collections", "src\Ibra.Collections\Ibra.Collections.csproj", "{00483C06-9EEF-4416-8329-4C18153CB970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,8 +99,23 @@ Global
 		{6E011F8A-9E96-4431-B3B9-D54929D757AE}.Release|x64.Build.0 = Release|Any CPU
 		{6E011F8A-9E96-4431-B3B9-D54929D757AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{6E011F8A-9E96-4431-B3B9-D54929D757AE}.Release|x86.Build.0 = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|x64.Build.0 = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Debug|x86.Build.0 = Debug|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|x64.ActiveCfg = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|x64.Build.0 = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|x86.ActiveCfg = Release|Any CPU
+		{00483C06-9EEF-4416-8329-4C18153CB970}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0AEDED3-AFE8-44B9-83C7-A0518F675DBC}
 	EndGlobalSection
 EndGlobal
