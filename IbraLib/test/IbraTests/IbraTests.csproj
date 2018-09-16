@@ -1,36 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <AssemblyTitle>IbraTests</AssemblyTitle>
-    <Authors>Eyas</Authors>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
-    <NoWarn>$(NoWarn);CS0618</NoWarn>
-    <AssemblyName>IbraTests</AssemblyName>
-    <PackageId>IbraTests</PackageId>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeFrameworkVersion>1.0.3</RuntimeFrameworkVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);netstandardapp1.5;dotnet5.4;portable-net451+win8</PackageTargetFallback>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>C:\Users\eyas_\Source\Repos\IbraLib\IbraLib\Backup\test\IbraTests\</UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <StartupObject></StartupObject>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Ibra.Collections\Ibra.Collections.csproj" />
     <ProjectReference Include="..\..\src\Ibra.Comparers\Ibra.Comparers.csproj" />
     <ProjectReference Include="..\..\src\Ibra.Enumerables\Ibra.Enumerables.csproj" />
     <ProjectReference Include="..\..\src\Ibra.Lazy\Ibra.Lazy.csproj" />
-    <ProjectReference Include="..\..\src\Ibra.Polymorphic\Ibra.Polymorphic.csproj" />
     <ProjectReference Include="..\..\src\Ibra.Logging\Ibra.Logging.csproj" />
+    <ProjectReference Include="..\..\src\Ibra.Polymorphic\Ibra.Polymorphic.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="xunit" Version="2.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
+
 </Project>
