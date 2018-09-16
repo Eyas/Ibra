@@ -74,6 +74,21 @@ namespace IbraTests
         }
 
         [Fact]
+        public static void LazyFunc_Recursive_OneToOne_Succeeds()
+        {
+            LazyFunc<int, int> fibonacci = new LazyFunc<int, int>((fibR, x) =>
+            {
+                if (x <= 2) return 1;
+                return fibR(x - 1) + fibR(x - 2);
+            });
+
+            Assert.Equal(4181, fibonacci[19]);
+            Assert.Equal(6765, fibonacci[20]);
+            Assert.Equal(89, fibonacci[11]);
+            Assert.Equal(13, fibonacci[7]);
+        }
+
+        [Fact]
         public static void LazyFunc_OneToOne_RecursiveFails()
         {
             LazyFunc<int, int> recurse = null;
@@ -85,6 +100,20 @@ namespace IbraTests
             Assert.Throws<System.InvalidOperationException>(() => recurse[5]);
             Assert.Throws<System.InvalidOperationException>(() => recurse[6]);
             Assert.Throws<System.InvalidOperationException>(() => recurse[5]);
+        }
+
+        [Fact]
+        public static void LazyFunc_Recursive_OneToOne_RecursiveFails()
+        {
+            LazyFunc<int, int> recurse = new LazyFunc<int, int>((rec, x) =>
+            {
+                return rec(x);
+            });
+
+            Assert.Throws<System.InvalidOperationException>(() => recurse[5]);
+            Assert.Throws<System.InvalidOperationException>(() => recurse[6]);
+            Assert.Throws<System.InvalidOperationException>(() => recurse[5]);
+
         }
 
         [Fact]
