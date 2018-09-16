@@ -30,15 +30,15 @@ namespace Ibra.Enumerables
             IEnumerator<TFrom> e = sequence.GetEnumerator();
             while (e.MoveNext())
             {
-                TTo to = e.Current as TTo;
-                if (to != null) yield return to;
+                if (e.Current is TTo to) yield return to;
             }
         }
 
-        public static IEnumerable<Tuple<T1, T2>> Combine<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
-            => first.Zip(second, Tuple.Create);
+        public static IEnumerable<ValueTuple<T1, T2>> Combine<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+            => first.Zip(second, ValueTuple.Create);
 
-        public static IEnumerable<Tuple<int, T>> ZipWithIndex<T>(this IEnumerable<T> sequence)
-            => sequence.Select((elt, idx) => Tuple.Create(idx, elt));
+        public static IEnumerable<ValueTuple<int, T>> ZipWithIndex<T>(this IEnumerable<T> sequence)
+            => sequence.Select((elt, idx) => ValueTuple.Create(idx, elt));
     }
 }
+
