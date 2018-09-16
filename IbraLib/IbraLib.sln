@@ -4,6 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IbraTests", "test\IbraTests\IbraTests.csproj", "{7BB66420-94B7-42BD-840A-4B41F72DA4CF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00483C06-9EEF-4416-8329-4C18153CB970} = {00483C06-9EEF-4416-8329-4C18153CB970}
+		{3D974406-ED70-4973-BB16-13CE30D0C6B6} = {3D974406-ED70-4973-BB16-13CE30D0C6B6}
+		{6E011F8A-9E96-4431-B3B9-D54929D757AE} = {6E011F8A-9E96-4431-B3B9-D54929D757AE}
+		{E61A8998-F148-48F3-A251-BBE3CAE16BB0} = {E61A8998-F148-48F3-A251-BBE3CAE16BB0}
+		{09E754C6-CA1F-40E2-98B8-D3C8015BFCAE} = {09E754C6-CA1F-40E2-98B8-D3C8015BFCAE}
+		{B68F55E2-6708-44DC-98E4-E7939BA852A1} = {B68F55E2-6708-44DC-98E4-E7939BA852A1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Comparers", "src\Ibra.Comparers\Ibra.Comparers.csproj", "{09E754C6-CA1F-40E2-98B8-D3C8015BFCAE}"
 EndProject
@@ -15,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Logging", "src\Ibra.Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Polymorphic", "src\Ibra.Polymorphic\Ibra.Polymorphic.csproj", "{6E011F8A-9E96-4431-B3B9-D54929D757AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ibra.Collections", "src\Ibra.Collections\Ibra.Collections.csproj", "{00483C06-9EEF-4416-8329-4C18153CB970}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ibra.Collections", "src\Ibra.Collections\Ibra.Collections.csproj", "{00483C06-9EEF-4416-8329-4C18153CB970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
