@@ -25,12 +25,47 @@ namespace Ibra.Logging
         {
             _staticLogger.Value.AddSource(source, level, destination);
         }
+
+        /// <summary>
+        /// If the program is configured to allow the current <paramref name="source"/>
+        /// and <paramref name="context"/>, returns a <see cref="LogWriter"/> instance
+        /// to be used to write individual log messages. Otherwise returns null.
+        /// </summary>
+        /// <example>
+        /// Log(source, level)?.WriteLine("Foo");
+        /// </example>
+        /// <param name="context">Passed automatically by the compiler</param>
+        /// <param name="line">Passed automatically by the compiler</param>
         public static LogWriter? Log(
             Source source, Level level,
             [System.Runtime.CompilerServices.CallerMemberName] string context = "",
             [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
         => _staticLogger.Value.Log(source, level, context, line);
         public static Source ALL => _staticLogger.Value.ALL;
+
+        /// <seealso cref="Exceptions.LoggedException.LoggedException(Source, Logger, string, int)"/>
+        public static Exceptions.LoggedException LoggedException(
+            Source logSource,
+            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
+        => new Exceptions.LoggedException(logSource, _staticLogger.Value, caller, line);
+
+        /// <seealso cref="Exceptions.LoggedException.LoggedException(string, Source, Logger, string, int)"/>
+        public static Exceptions.LoggedException LoggedException(
+            string what,
+            Source logSource,
+            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
+        => new Exceptions.LoggedException(what, logSource, _staticLogger.Value, caller, line);
+
+        /// <seealso cref="Exceptions.LoggedException.LoggedException(string, System.Exception, Source, Logger, string, int)"/>
+        public static Exceptions.LoggedException LoggedException(
+            string what,
+            System.Exception inner,
+            Source logSource,
+            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
+        => new Exceptions.LoggedException(what, inner, logSource, _staticLogger.Value, caller, line);
     }
 
     /// <summary>
