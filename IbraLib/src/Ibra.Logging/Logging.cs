@@ -43,29 +43,49 @@ namespace Ibra.Logging
         => _staticLogger.Value.Log(source, level, context, line);
         public static Source ALL => _staticLogger.Value.ALL;
 
-        /// <seealso cref="Exceptions.LoggedException.LoggedException(Source, Logger, string, int)"/>
-        public static Exceptions.LoggedException LoggedException(
-            Source logSource,
-            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
-            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
-        => new Exceptions.LoggedException(logSource, _staticLogger.Value, caller, line);
+        /// <summary>
+        /// Exception type logged to the Static Log on construction. Similar to
+        /// <see cref="Exceptions.LoggedException"/> but ses <see cref="StaticLogger"/>.
+        /// </summary>
+        public class LoggedException : Exceptions.LoggedException
+        {
+            /// <summary>
+            /// Constructs a <see cref="LoggedException"/> with no message. Logs
+            /// that an exception of a certain Type has occurred.
+            /// </summary>
+            public LoggedException(
+                Source logSource,
+                [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+                [System.Runtime.CompilerServices.CallerLineNumber] int line = -1) :
+                base(logSource, _staticLogger.Value, caller, line)
+            { }
 
-        /// <seealso cref="Exceptions.LoggedException.LoggedException(string, Source, Logger, string, int)"/>
-        public static Exceptions.LoggedException LoggedException(
-            string what,
-            Source logSource,
-            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
-            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
-        => new Exceptions.LoggedException(what, logSource, _staticLogger.Value, caller, line);
+            /// <summary>
+            /// Constructs a <see cref="LoggedException"/> with a message. Logs the exception
+            /// type and message.
+            /// </summary>
+            public LoggedException(
+                string what,
+                Source logSource,
+                [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+                [System.Runtime.CompilerServices.CallerLineNumber] int line = -1) :
+                base(what, logSource, _staticLogger.Value, caller, line)
+            { }
 
-        /// <seealso cref="Exceptions.LoggedException.LoggedException(string, System.Exception, Source, Logger, string, int)"/>
-        public static Exceptions.LoggedException LoggedException(
-            string what,
-            System.Exception inner,
-            Source logSource,
-            [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
-            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
-        => new Exceptions.LoggedException(what, inner, logSource, _staticLogger.Value, caller, line);
+            /// <summary>
+            /// Constructs a <see cref="LoggedException"/> with a message and
+            /// <paramref name="inner"/> <see cref="System.Exception"/>. Logs the exception
+            /// type and message, and the inner exception.
+            /// </summary>
+            public LoggedException(
+                string what,
+                System.Exception inner,
+                Source logSource,
+                [System.Runtime.CompilerServices.CallerMemberName] string caller = "",
+                [System.Runtime.CompilerServices.CallerLineNumber] int line = -1) :
+                base(what, inner, logSource, _staticLogger.Value, caller, line)
+            { }
+        }
     }
 
     /// <summary>
