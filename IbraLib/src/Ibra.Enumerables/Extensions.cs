@@ -20,6 +20,14 @@ namespace Ibra.Enumerables
         public static IEnumerable<T> SelectWhere<U, T>(this IEnumerable<U> sequence, Func<U, T?> func) where T : struct
             => sequence.Select(func).Flatten();
 
+        public static IEnumerable<V> TrySelectFromDictionary<K, V>(this IEnumerable<K> sequence, IReadOnlyDictionary<K, V> dictionary)
+        {
+            foreach (K key in sequence)
+            {
+                if (dictionary.TryGetValue(key, out V value)) yield return value;
+            }
+        }
+
         public static IEnumerable<T> ToEnumerable<T>(this T? maybe) where T : struct
             => maybe.HasValue ? One(maybe.Value) : Enumerable.Empty<T>();
 
