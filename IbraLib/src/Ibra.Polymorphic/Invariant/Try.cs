@@ -64,28 +64,31 @@ namespace Ibra.Polymorphic.Invariant
         }
 
         /// <summary>
-        /// Executes <paramref name="onSuccess"/> if this Try(T) is successful, otherwise does nothing.
+        /// Executes <paramref name="onSuccess"/> if this <see cref="Invariant.Try{TResult}"/> is
+        /// successful, otherwise does nothing.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> will perculate upwards and be thrown
-        /// immediately when this method is called.
+        /// An exception being thrown in <paramref name="onSuccess"/> will result in the
+        /// <see cref="Invariant.Try{Unit}"/>  being returned containing an Exception.
         /// </remarks>
-        public void Then(Action<TResult> onSuccess)
+        public Try<Unit> Then(Action<TResult> onSuccess)
         {
-            if (_exception == null) onSuccess(_success);
+            if (_exception != null) return new Try<Unit>(_exception);
+            return onSuccess.Try(_success);
         }
 
         /// <summary>
-        /// Executes <paramref name="onSuccess"/> if this Try(T) is successful, otherwise executes <paramref name="onFailure"/>.
+        /// Executes <paramref name="onSuccess"/> if this <see cref="Invariant.Try{TResult}"/> is
+        /// successful, otherwise executes <paramref name="onFailure"/>.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will perculate
-        /// upwards and be thrown immediately when this method is called.
+        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/>
+        /// will result in the <see cref="Invariant.Try{Unit}"/> being returned containing an Exception.
         /// </remarks>
-        public void Then(Action<TResult> onSuccess, Action<Exception> onFailure)
+        public Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure)
         {
-            if (_exception != null) onFailure(_exception);
-            else onSuccess(_success);
+            if (_exception != null) return onFailure.Try(_exception);
+            else return onSuccess.Try(_success);
         }
         
         /// <summary>
@@ -118,6 +121,40 @@ namespace Ibra.Polymorphic.Invariant
     }
     
     public static class TryExtensions {
+        /// <summary>
+        /// Executes a void function <paramref name="action"/> and returns <see cref="Invariant.Try{Unit}"/>.
+        /// </summary>
+        public static Try<Unit> Try(this Action action)
+        {
+            try
+            {
+                action();
+                return new Try<Unit>(Unit.Instance);
+            }
+            catch (Exception e)
+            {
+                return new Try<Unit>(e);
+            }
+        }
+
+        /// <summary>
+        /// Executes a void function <paramref name="action"/>, which takes one
+        /// argument, <paramref name="arg"/>and returns <see cref="Invariant.Try{Unit}"/>.
+        /// </summary>
+        public static Try<Unit> Try<TArg>(this Action<TArg> action, TArg arg)
+        {
+            try
+            {
+                action(arg);
+                return new Try<Unit>(Unit.Instance);
+            }
+            catch (Exception e)
+            {
+                return new Try<Unit>(e);
+            }
+        }
+
+
         /// <summary>
         /// Executes a function and returns its result as a `Try(T)`.
         /// </summary>

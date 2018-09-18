@@ -13,22 +13,25 @@ namespace Ibra.Polymorphic.Covariant
     public interface Try<out TResult>
     {
         /// <summary>
-        /// Executes <paramref name="onSuccess"/> if this Try(T) is successful, otherwise does nothing.
+        /// Executes <paramref name="onSuccess"/> if this <see cref="Covariant.Try{TResult}"/> is
+        /// successful, otherwise does nothing.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> will perculate upwards and be thrown
-        /// immediately when this method is called.
+        /// An exception being thrown in <paramref name="onSuccess"/> will result in the
+        /// <see cref="Covariant.Try{Unit}"/>  being returned resolving to a <see cref="Failure{Unit}"/>.
         /// </remarks>
-        void Then(Action<TResult> onSuccess);
-        
+        Try<Unit> Then(Action<TResult> onSuccess);
+
         /// <summary>
-        /// Executes <paramref name="onSuccess"/> if this Try(T) is successful, otherwise executes <paramref name="onFailure"/>.
+        /// Executes <paramref name="onSuccess"/> if this <see cref="Covariant.Try{TResult}"/> is
+        /// successful, otherwise executes <paramref name="onFailure"/>.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will perculate
-        /// upwards and be thrown immediately when this method is called.
+        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/>
+        /// will result in the <see cref="Covariant.Try{Unit}"/> being returned resolving to a
+        /// <see cref="Failure{Unit}"/>.
         /// </remarks>
-        void Then(Action<TResult> onSuccess, Action<Exception> onFailure);
+        Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure);
         
         /// <summary>
         /// Returns a Try of the result of <paramref name="onSuccess"/> if this Try(T) is successful. Otherwise
@@ -65,7 +68,7 @@ namespace Ibra.Polymorphic.Covariant
         /// </remarks>
         TResult2 Convert<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure);
     }
-    
+
     /// <summary>
     /// Represents a successful action with a a valid result.
     /// </summary>
@@ -83,9 +86,9 @@ namespace Ibra.Polymorphic.Covariant
 
         public TResult GetOrThrow() => Result;
 
-        public void Then(Action<TResult> onSuccess) { onSuccess(Result); }
+        public Try<Unit> Then(Action<TResult> onSuccess) => onSuccess.Try(Result);
 
-        public void Then(Action<TResult> onSuccess, Action<Exception> onFailure) { onSuccess(Result); }
+        public Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure) => onSuccess.Try(Result);
 
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess)
             => onSuccess.Try(Result);
@@ -112,9 +115,9 @@ namespace Ibra.Polymorphic.Covariant
 
         public TResult GetOrThrow() { throw Exception; }
 
-        public void Then(Action<TResult> onSuccess) { }
+        public Try<Unit> Then(Action<TResult> onSuccess) => new Failure<Unit>(Exception);
 
-        public void Then(Action<TResult> onSuccess, Action<Exception> onFailure) { onFailure(Exception); }
+        public Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure) => onFailure.Try(Exception);
 
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess)
             => new Failure<TResult2>(Exception);
@@ -124,6 +127,40 @@ namespace Ibra.Polymorphic.Covariant
     }
     
     public static class TryExtensions {
+        /// <summary>
+        /// Executes a void function <paramref name="action"/> and returns
+        /// <see cref="Covariant.Try{Unit}"/>.
+        /// </summary>
+        public static Try<Unit> Try(this Action func)
+        {
+            try
+            {
+                func();
+                return new Success<Unit>(Unit.Instance);
+            }
+            catch (Exception e)
+            {
+                return new Failure<Unit>(e);
+            }
+        }
+
+        /// <summary>
+        /// Executes a void function <paramref name="action"/>, which takes one
+        /// argument, <paramref name="arg"/>and returns <see cref="Covariant.Try{Unit}"/>.
+        /// </summary>
+        public static Try<Unit> Try<TArg>(this Action<TArg> func, TArg arg)
+        {
+            try
+            {
+                func(arg);
+                return new Success<Unit>(Unit.Instance);
+            }
+            catch (Exception e)
+            {
+                return new Failure<Unit>(e);
+            }
+        }
+
         /// <summary>
         /// Executes a function and returns its result as a `Try(T)`.
         /// </summary>
@@ -145,7 +182,7 @@ namespace Ibra.Polymorphic.Covariant
         /// </summary>
         /// <remarks>
         /// While this method can be implemented using <see cref="TryExtensions.Try{TResult}"/>
-        /// and creating a closure, this (and ther) convinience methods here do away with the closre
+        /// and creating a closure, this (and other) convinience methods here do away with the closre
         /// by re-implementing the `Try` method.
         /// </remarks>
         public static Try<TResult> Try<TArg, TResult>(this Func<TArg, TResult> func, TArg arg)
