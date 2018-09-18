@@ -12,6 +12,6 @@
     <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
     <FileUpgradeFlags>40</FileUpgradeFlags>
-    <Version>1.0.0-beta1</Version>
+    <Version>1.0.0-beta2</Version>
   </PropertyGroup>
 </Project>
