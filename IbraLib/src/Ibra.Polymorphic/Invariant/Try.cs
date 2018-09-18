@@ -29,8 +29,8 @@ namespace Ibra.Polymorphic.Invariant
         }
 
         /// <summary>
-        /// Returns the reuslt of <paramref name="onSuccess"/> if this Try(T) is successful, or otherwise
-        /// the result of <paramref name="onFailure"/>.
+        /// Returns the reuslt of <paramref name="onSuccess"/> if this <see cref="Invariant.Try{TResult}"/>
+        /// is successful, or otherwise the result of <paramref name="onFailure"/>.
         /// </summary>
         /// <remarks>
         /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will perculate
@@ -44,17 +44,20 @@ namespace Ibra.Polymorphic.Invariant
 
         /// <summary>
         /// If a <see cref="Invariant.Try{TResult}"/> is a failure whose inner Exception
-        /// if of type <typeparamref name="TException"/> , catch the result and turn that into a <see cref="Invariant.Try{TResult}"/>
-        /// with the value of <paramref name="catcher"/> (if it succeeds).
+        /// if of type <typeparamref name="TException"/> , catch the result and turn that
+        /// into a <see cref="Invariant.Try{TResult}"/> with the value of
+        /// <paramref name="catcher"/> (if it succeeds).
         /// </summary>
         /// <remarks>
         /// - If our `Try` is successful, this method simply returns the same `Try` object.
-        /// - If our `Try` is failed, with an exception that is not a sub-type of `TException`, this method simply returns
-        ///   the same failed `Try` object.
-        /// - If our `Try` is failed, with an exception that *is* `TException`, this method returns either:
-        ///   (a) a successful `Try` object with the value of <paramref name="catcher"/> applied to the exception, if
-        ///       the function is evaluated successfully, or
-        ///   (b) a new failed `Try` object, with the new exception thrown during the evaluation of <paramref name="catcher"/>.
+        /// - If our `Try` is failed, with an exception that is not a sub-type of `TException`,
+        ///   this method simply returns the same failed `Try` object.
+        /// - If our `Try` is failed, with an exception that *is* `TException`, this method
+        ///   returns either:
+        ///   (a) a successful `Try` object with the value of <paramref name="catcher"/>
+        ///       applied to the exception, if the function is evaluated successfully, or
+        ///   (b) a new failed `Try` object, with the new exception thrown during the evaluation
+        ///       of <paramref name="catcher"/>.
         /// </remarks>
         public Try<TResult> Catch<TException>(Func<TException, TResult> catcher)
             where TException : Exception
@@ -90,14 +93,16 @@ namespace Ibra.Polymorphic.Invariant
             if (_exception != null) return onFailure.Try(_exception);
             else return onSuccess.Try(_success);
         }
-        
+
         /// <summary>
-        /// Returns a Try of the result of <paramref name="onSuccess"/> if this Try(T) is successful. Otherwise
-        /// returns the same Failure(T).
+        /// Returns a Try of the result of <paramref name="onSuccess"/> if this
+        /// <see cref="Invariant.Try{TResult}"/> is successful. Otherwise returns
+        /// a <see cref="Invariant.Try{TResult2}"/> with an exception.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> will result in the Try(<typeparam name="TResult2"/>)
-        /// being returned resolving to a Failure(<typeparam name="TResult2" />).
+        /// An exception being thrown in <paramref name="onSuccess"/> will result
+        /// in the Try(<typeparam name="TResult2"/>) being returned containing an
+        /// exception.
         /// </remarks>
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess)
         {
@@ -106,12 +111,15 @@ namespace Ibra.Polymorphic.Invariant
         }
         
         /// <summary>
-        /// Returns a Try of the result of <paramref name="onSuccess"/> if this Try(T) is successful. Otherwise
-        /// returns a Try of the result of <paramref name="onFailure"/> applied to the thrown Exception.
+        /// Returns a Try of the result of <paramref name="onSuccess"/> if this
+        /// <see cref="Invariant.Try{TResult}"/> is successful. Otherwise returns
+        /// a Try of the result of <paramref name="onFailure"/> applied to the thrown
+        /// Exception.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will result
-        /// in the Try being returned resolving to a Failure(<typeparam name="TResult2" />).
+        /// An exception being thrown in <paramref name="onSuccess"/> or
+        /// <paramref name="onFailure"/> will result in the Try being returned containing
+        /// an exception.
         /// </remarks>
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure)
         {
@@ -122,7 +130,8 @@ namespace Ibra.Polymorphic.Invariant
     
     public static class TryExtensions {
         /// <summary>
-        /// Executes a void function <paramref name="action"/> and returns <see cref="Invariant.Try{Unit}"/>.
+        /// Executes a void function <paramref name="action"/> and returns
+        /// <see cref="Invariant.Try{Unit}"/>.
         /// </summary>
         public static Try<Unit> Try(this Action action)
         {
@@ -156,7 +165,7 @@ namespace Ibra.Polymorphic.Invariant
 
 
         /// <summary>
-        /// Executes a function and returns its result as a `Try(T)`.
+        /// Executes a function and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TResult>(this Func<TResult> function)
         {
@@ -172,7 +181,7 @@ namespace Ibra.Polymorphic.Invariant
 
         /// <summary>
         /// Executes a function which takes one argument, <paramref name="arg"/>, and returns
-        /// its result as a `Try(T)`.
+        /// its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         /// <remarks>
         /// While this method can be implemented using <see cref="TryExtensions.Try{TResult}"/>
@@ -193,7 +202,7 @@ namespace Ibra.Polymorphic.Invariant
 
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/> and <paramref name="arg2"/>,
-        /// and returns its result as a `Try(T)`.
+        /// and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TResult>(this Func<TArg1, TArg2, TResult> function, TArg1 arg1, TArg2 arg2)
         {
@@ -209,7 +218,7 @@ namespace Ibra.Polymorphic.Invariant
 
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>, and
-        /// <paramref name="arg3"/>, and returns its result as a `Try(T)`.
+        /// <paramref name="arg3"/>, and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TResult>(
             this Func<TArg1, TArg2, TArg3, TResult> function,
@@ -227,7 +236,7 @@ namespace Ibra.Polymorphic.Invariant
 
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>,
-        /// <paramref name="arg3"/>, and <paramref name="arg4"/>, and returns its result as a `Try(T)`.
+        /// <paramref name="arg3"/>, and <paramref name="arg4"/>, and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TResult>(
             this Func<TArg1, TArg2, TArg3, TArg4, TResult> function,
@@ -246,7 +255,7 @@ namespace Ibra.Polymorphic.Invariant
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>,
         /// <paramref name="arg3"/>, <paramref name="arg4"/>, and <paramref name="arg5"/> and returns its
-        /// result as a `Try(T)`.
+        /// result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
             this Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> function,

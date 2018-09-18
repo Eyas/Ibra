@@ -18,7 +18,7 @@ namespace Ibra.Polymorphic.Covariant
         /// </summary>
         /// <remarks>
         /// An exception being thrown in <paramref name="onSuccess"/> will result in the
-        /// <see cref="Covariant.Try{Unit}"/>  being returned resolving to a <see cref="Failure{Unit}"/>.
+        /// <see cref="Covariant.Try{Unit}"/> being returned resolving to a <see cref="Failure{Unit}"/>.
         /// </remarks>
         Try<Unit> Then(Action<TResult> onSuccess);
 
@@ -32,39 +32,47 @@ namespace Ibra.Polymorphic.Covariant
         /// <see cref="Failure{Unit}"/>.
         /// </remarks>
         Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure);
-        
+
         /// <summary>
-        /// Returns a Try of the result of <paramref name="onSuccess"/> if this Try(T) is successful. Otherwise
-        /// returns the same Failure(T).
+        /// Returns a Try of the result of <paramref name="onSuccess"/> if this
+        /// <see cref="Covariant.Try{TResult}"/> is successful. Otherwise returns
+        /// the a <see cref="Failure{TResult}"/>.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> will result in the Try(<typeparam name="TResult2"/>)
-        /// being returned resolving to a Failure(<typeparam name="TResult2" />).
+        /// An exception being thrown in <paramref name="onSuccess"/> will result
+        /// in the Try(<typeparam name="TResult2"/>) being returned resolving to a
+        /// Failure(<typeparam name="TResult2" />).
         /// </remarks>
         Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess);
         
         /// <summary>
-        /// Returns a Try of the result of <paramref name="onSuccess"/> if this Try(T) is successful. Otherwise
-        /// returns a Try of the result of <paramref name="onFailure"/> applied to the thrown Exception.
+        /// Returns a Try of the result of <paramref name="onSuccess"/> if this
+        /// <see cref="Covariant.Try{TResult}"/> is successful. Otherwise returns
+        /// a Try of the result of <paramref name="onFailure"/> applied to the
+        /// thrown Exception.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will result
-        /// in the Try being returned resolving to a Failure(<typeparam name="TResult2" />).
+        /// An exception being thrown in <paramref name="onSuccess"/> or
+        /// <paramref name="onFailure"/> will result in the Try being returned
+        /// resolving to a Failure(<typeparam name="TResult2" />).
         /// </remarks>
         Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure);
         
         /// <summary>
-        /// Returns the result of this Try if it is successful, or throws the stored Exception otherwise.
+        /// Returns the result of this Try if it is successful, or throws the
+        /// stored Exception otherwise.
         /// </summary>
         TResult GetOrThrow();
         
         /// <summary>
-        /// Returns the reuslt of <paramref name="onSuccess"/> if this Try(T) is successful, or otherwise
+        /// Returns the reuslt of <paramref name="onSuccess"/> if this
+        /// <see cref="Covariant.Try{TResult}"/> is successful, or otherwise
         /// the result of <paramref name="onFailure"/>.
         /// </summary>
         /// <remarks>
-        /// An exception being thrown in <paramref name="onSuccess"/> or <paramref name="onFailure"/> will perculate
-        /// upwards and be thrown immediately when this method is called.
+        /// An exception being thrown in <paramref name="onSuccess"/> or
+        /// <paramref name="onFailure"/> will perculate upwards and be thrown
+        /// immediately when this method is called.
         /// </remarks>
         TResult2 Convert<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure);
     }
@@ -162,7 +170,7 @@ namespace Ibra.Polymorphic.Covariant
         }
 
         /// <summary>
-        /// Executes a function and returns its result as a `Try(T)`.
+        /// Executes a function and returns its result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TResult>(this Func<TResult> func)
         {
@@ -178,7 +186,7 @@ namespace Ibra.Polymorphic.Covariant
         
         /// <summary>
         /// Executes a function which takes one argument, <paramref name="arg"/>, and returns
-        /// its result as a `Try(T)`.
+        /// its result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         /// <remarks>
         /// While this method can be implemented using <see cref="TryExtensions.Try{TResult}"/>
@@ -199,7 +207,7 @@ namespace Ibra.Polymorphic.Covariant
         
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/> and <paramref name="arg2"/>,
-        /// and returns its result as a `Try(T)`.
+        /// and returns its result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TResult>(this Func<TArg1, TArg2, TResult> func,
             TArg1 arg1, TArg2 arg2)
@@ -216,7 +224,7 @@ namespace Ibra.Polymorphic.Covariant
         
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>, and
-        /// <paramref name="arg3"/>, and returns its result as a `Try(T)`.
+        /// <paramref name="arg3"/>, and returns its result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TResult>(this Func<TArg1, TArg2, TArg3, TResult> func,
             TArg1 arg1, TArg2 arg2, TArg3 arg3)
@@ -232,8 +240,9 @@ namespace Ibra.Polymorphic.Covariant
         }
         
         /// <summary>
-        /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>,
-        /// <paramref name="arg3"/>, and <paramref name="arg4"/>, and returns its result as a `Try(T)`.
+        /// Executes a function which takes arguments, <paramref name="arg1"/>,
+        /// <paramref name="arg2"/>, <paramref name="arg3"/>, and <paramref name="arg4"/>,
+        /// and returns its result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TResult>(this Func<TArg1, TArg2, TArg3, TArg4, TResult> func,
             TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4)
@@ -251,7 +260,7 @@ namespace Ibra.Polymorphic.Covariant
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>,
         /// <paramref name="arg3"/>, <paramref name="arg4"/>, and <paramref name="arg5"/> and returns its
-        /// result as a `Try(T)`.
+        /// result as a <see cref="Covariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(this Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> func,
             TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5)
