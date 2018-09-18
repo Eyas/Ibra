@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace Ibra.Logging
 {
-    /// defines a set of logging destinations and functions that can be used in a static context.
+    /// <summary>
+    /// Defines a set of logging destinations and functions that can be used in a static context.
+    /// </summary>
+    /// <example>
     /// Typically intended to be used with a
     ///     using static Ibra.Logging.StaticLogger;
     /// directive. This allows the user to call:
@@ -13,6 +16,7 @@ namespace Ibra.Logging
     ///       .WriteLine(yyy);
     /// instead of using a the "Log" member function on a specific instance of the Ibra.Logging.Logger
     /// class.
+    /// </example>
     public static class StaticLogger
     {
         private static System.Lazy<Logger> _staticLogger = new System.Lazy<Logger>();
@@ -23,14 +27,20 @@ namespace Ibra.Logging
         }
         public static LogWriter? Log(
             Source source, Level level,
-            [System.Runtime.CompilerServices.CallerMemberName] string context = "")
-        => _staticLogger.Value.Log(source, level, context);
+            [System.Runtime.CompilerServices.CallerMemberName] string context = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
+        => _staticLogger.Value.Log(source, level, context, line);
         public static Source ALL => _staticLogger.Value.ALL;
     }
 
+    /// <summary>
+    /// Top-level object for writing, initializing, and configuring logs.
+    /// </summary>
     public class Logger
     {
+        /// <summary>A log source applying to all individually registered sources.</summary>
         public readonly Source ALL;
+
         private readonly List<SourceRoutes> _logLevels;
         private readonly Dictionary<string, Source> _logSources;
 
@@ -82,7 +92,8 @@ namespace Ibra.Logging
 
         public LogWriter? Log(
             Source source, Level level,
-            [System.Runtime.CompilerServices.CallerMemberName] string context = "")
+            [System.Runtime.CompilerServices.CallerMemberName] string context = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int line = -1)
         {
             if (source.Owner != this || source.Index >= _logLevels.Count)
                 throw new LoggingException($"Source {source} not recognized.");
@@ -92,7 +103,7 @@ namespace Ibra.Logging
             SourceRoutes routes = _logLevels[source.Index];
             if (routes.MaxVerbosity >= level)
             {
-                return new LogWriter(source, level, context, routes);
+                return new LogWriter(source, level, context, line, routes);
             }
             else return null;
         }
