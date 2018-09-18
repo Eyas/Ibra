@@ -17,8 +17,7 @@ namespace Ibra.Polymorphic.Covariant.Extensions
         {
             foreach (var maybe in sequence)
             {
-                Just<T> just = maybe as Just<T>;
-                if (just != null) yield return just.Value;
+                if (maybe is Just<T> just) yield return just.Value;
             }
         }
 
@@ -47,8 +46,7 @@ namespace Ibra.Polymorphic.Covariant.Extensions
 
         public static Maybe<TValue> Get<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-            TValue result;
-            if (dictionary.TryGetValue(key, out result))
+            if (dictionary.TryGetValue(key, out TValue result))
             {
                 return Maybe.Just(result);
             }
@@ -60,8 +58,7 @@ namespace Ibra.Polymorphic.Covariant.Extensions
 
         public static Maybe<TValue> Get<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
         {
-            TValue result;
-            if (dictionary.TryGetValue(key, out result))
+            if (dictionary.TryGetValue(key, out TValue result))
             {
                 return Maybe.Just(result);
             }
