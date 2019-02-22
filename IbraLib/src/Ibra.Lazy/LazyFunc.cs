@@ -68,7 +68,7 @@ namespace Ibra.Lazy
         /// (2) t is in the dictionary, with value Nothing-- faulted but not cached; don't infinitely recurse
         /// (3) t is in the dictionary, with a defined value-- cached and can be safely returned.
         /// </summary>
-        private Dictionary<T, ResultInfo> _lazy;
+        private readonly Dictionary<T, ResultInfo> _lazy;
         #endregion
 
         public LazyFunc(Func<T, R> func, IEqualityComparer<T> comparer)

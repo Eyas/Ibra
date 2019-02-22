@@ -11,7 +11,7 @@ namespace IbraTests.Polymorphic.Invariant
     public class TryTests
     {
         [Fact]
-        void Success_Basic()
+        public void Success_Basic()
         {
             Func<string> lambda = ()=>"successful result.";
             Try<string> succ = lambda.Try();
@@ -32,7 +32,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
         
         [Fact]
-        void Failure_Throws()
+        public void Failure_Throws()
         {
             Func<string> lambda = ()=>{throw new TestException();};
             Try<string> fail = lambda.Try();

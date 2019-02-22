@@ -48,7 +48,7 @@ namespace Ibra.Comparers
             int h = 0;
             foreach (T item in x)
             {
-                h = h ^ _cmp.GetHashCode(item);
+                h ^= _cmp.GetHashCode(item);
             }
             return h;
         }

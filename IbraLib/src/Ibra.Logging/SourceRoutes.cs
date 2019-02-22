@@ -5,14 +5,13 @@ namespace Ibra.Logging
 {
     internal class SourceRoutes
     {
-        private Dictionary<TextWriter, Level> _writers = new Dictionary<TextWriter, Level>();
+        private readonly Dictionary<TextWriter, Level> _writers = new Dictionary<TextWriter, Level>();
 
         public SourceRoutes() { }
         public Level MaxVerbosity { get; private set; } = Level.NEVER;
         public void AddOutput(TextWriter writer, Level level)
         {
-            Level existing = Level.NEVER;
-            _writers.TryGetValue(writer, out existing);
+            _writers.TryGetValue(writer, out Level existing);
 
             if (level > existing)
             {

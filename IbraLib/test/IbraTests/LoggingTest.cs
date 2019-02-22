@@ -9,7 +9,7 @@ namespace IbraTests
     /// .NET Framework and .NET Core as of now.!--.!--.
     public class MockedWriter : System.IO.TextWriter
     {
-        private StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new StringBuilder();
 
         public override Encoding Encoding => Encoding.UTF8;
 

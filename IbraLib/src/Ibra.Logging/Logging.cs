@@ -19,7 +19,7 @@ namespace Ibra.Logging
     /// </example>
     public static class StaticLogger
     {
-        private static System.Lazy<Logger> _staticLogger = new System.Lazy<Logger>();
+        private static readonly System.Lazy<Logger> _staticLogger = new System.Lazy<Logger>();
         public static Source RegisterSource(string name) => _staticLogger.Value.RegisterSource(name);
         public static void AddSource(Source source, Level level, TextWriter destination)
         {

@@ -11,7 +11,7 @@ namespace IbraTests.Polymorphic.Covariant
     public class TryTests
     {
         [Fact]
-        void Success_Basic()
+        public void Success_Basic()
         {
             Success<string> succ = new Success<string>("successful result.");
             Assert.Equal("successful result.", succ.Result);
@@ -31,7 +31,7 @@ namespace IbraTests.Polymorphic.Covariant
         }
         
         [Fact]
-        void Failure_Throws()
+        public void Failure_Throws()
         {
             Failure<string> fail = new Failure<string>(new TestException());
             Assert.Throws<TestException>(() => fail.GetOrThrow());

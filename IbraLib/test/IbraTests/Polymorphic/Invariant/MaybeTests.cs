@@ -11,7 +11,7 @@ namespace IbraTests.Polymorphic.Invariant
     {
 
         [Fact]
-        void Nothing_AlwaysThrows()
+        public void Nothing_AlwaysThrows()
         {
             var vt1 = Maybe<int>.Nothing;
             var vt2 = Maybe<KeyValuePair<int, double>>.Nothing;
@@ -30,7 +30,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_AlwaysSucceeds()
+        public void Just_AlwaysSucceeds()
         {
             var vt1 = Maybe.Just(5);
             var vt2 = Maybe.Just(new KeyValuePair<int, double>(5, 8.0));
@@ -50,7 +50,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Nothing_Map_HasNoEffect()
+        public void Nothing_Map_HasNoEffect()
         {
             int iiMap(int x) { Assert.True(false, "Expected this is unreached."); return x; }
             string isMap(int x) { Assert.True(false, "Expected this is unreached."); return x.ToString(); }
@@ -73,7 +73,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_Map_HasEffect()
+        public void Just_Map_HasEffect()
         {
             int iiMap(int x) => x * 2;
             string isMap(int x) => x.ToString();
@@ -113,7 +113,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Nothing_FlatMap_DoesntEven()
+        public void Nothing_FlatMap_DoesntEven()
         {
             // when FlatMap'ing a Nothing.. you can't even!
             Maybe<int> iiMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x); }
@@ -137,7 +137,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Anything_FlatMapWithNothing_CreatesNothing()
+        public void Anything_FlatMapWithNothing_CreatesNothing()
         {
             Maybe<int> iiMap(int x) => Maybe<int>.Nothing;
             Maybe<string> isMap(int x) => Maybe<string>.Nothing;
@@ -164,7 +164,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Nothing_Convert_Sanity()
+        public void Nothing_Convert_Sanity()
         {
             Maybe<int> nI = Maybe<int>.Nothing;
             Maybe<string> nS = Maybe<string>.Nothing;
@@ -180,7 +180,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_Convert_Sanity()
+        public void Just_Convert_Sanity()
         {
             Maybe<int> i1 = Maybe.Just(5);
             Maybe<int> i2 = Maybe.Just(0);
@@ -210,7 +210,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Nothing_TrueFilter_DoesntEven()
+        public void Nothing_TrueFilter_DoesntEven()
         {
             bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
 
@@ -221,7 +221,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_TrueFilter_Doesnt()
+        public void Just_TrueFilter_Doesnt()
         {
             bool noEffect_int(int i) => true;
             bool noEffect_string(string i) => true;
@@ -237,7 +237,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_FalseFilter_Filters()
+        public void Just_FalseFilter_Filters()
         {
             bool iFilter(int i) => false;
             bool sFilter(string i) => false;
@@ -268,7 +268,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Nothing_GetOrElse_Else()
+        public void Nothing_GetOrElse_Else()
         {
             var nI = Maybe<int>.Nothing;
             var nS = Maybe<string>.Nothing;
@@ -285,7 +285,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Just_GetOrElse_Get()
+        public void Just_GetOrElse_Get()
         {
             Assert.Equal(5, Maybe.Just(5).GetOrElse(-1));
             Assert.Equal(15, Maybe.Just(15).GetOrElse(-1));
@@ -303,7 +303,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Equals_Nothing_Nothing_TrueSameType()
+        public void Equals_Nothing_Nothing_TrueSameType()
         {
             Assert.True(Maybe<string>.Nothing.Equals(Maybe<string>.Nothing));
             Assert.True(Maybe<object>.Nothing.Equals(Maybe<object>.Nothing));
@@ -321,7 +321,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Equals_Nothing_Just_AlwaysFalse()
+        public void Equals_Nothing_Just_AlwaysFalse()
         {
             Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just("something")));
             Assert.False(Maybe<string>.Nothing.Equals(Maybe.Just("")));
@@ -335,7 +335,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Equals_JustDifferent_False()
+        public void Equals_JustDifferent_False()
         {
             Assert.False(Maybe.Just("nothing").Equals(Maybe.Just("something")));
             Assert.False(Maybe.Just("nothing").Equals(Maybe.Just("something") as object));
@@ -351,7 +351,7 @@ namespace IbraTests.Polymorphic.Invariant
         }
 
         [Fact]
-        void Equals_JustEqual_True()
+        public void Equals_JustEqual_True()
         {
             Assert.True(Maybe.Just(6).Equals(Maybe.Just(6)));
             Assert.True(Maybe.Just(6).Equals(Maybe.Just(6) as object));
