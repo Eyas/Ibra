@@ -1,7 +1,6 @@
+using Ibra.Logging;
 using System.Text;
 using Xunit;
-
-using Ibra.Logging;
 
 namespace IbraTests
 {
@@ -9,7 +8,7 @@ namespace IbraTests
     /// .NET Framework and .NET Core as of now.!--.!--.
     public class MockedWriter : System.IO.TextWriter
     {
-        private readonly StringBuilder _sb = new StringBuilder();
+        private readonly StringBuilder _sb = new();
 
         public override Encoding Encoding => Encoding.UTF8;
 
@@ -36,12 +35,12 @@ namespace IbraTests
         [Fact]
         public void VerboseLog_LazilyEvaluated()
         {
-            Logger lg = new Logger();
+            Logger lg = new();
 
             MockedWriter
-              file1 = new MockedWriter(),
-              file2 = new MockedWriter(),
-              file3 = new MockedWriter();
+              file1 = new(),
+              file2 = new(),
+              file3 = new();
             Source
               source1 = lg.RegisterSource("source1"),
               source2 = lg.RegisterSource("source2"),
@@ -60,7 +59,7 @@ namespace IbraTests
             lg.Log(source1, Level.VERBOSE)
              ?.WriteLine(AssertNotCalled())
               .WriteLine(AssertNotCalled());
-            
+
             lg.Log(source2, Level.INFO)
              ?.WriteLine(AssertNotCalled());
 
@@ -76,7 +75,7 @@ namespace IbraTests
               ?.WriteLine("Exists_1")
                .WriteLine("Exists_2")
                .WriteLine("Exists_3");
-            
+
             Assert.Contains("INFO", file1.Text);
             Assert.Contains("Exists_1", file1.Text);
             Assert.Contains("Exists_2", file1.Text);

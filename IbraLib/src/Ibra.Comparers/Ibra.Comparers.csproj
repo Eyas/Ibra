@@ -1,23 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Provides support for list equality and ordinal comparison based on the contents of its individual items. Allows users to pass ImmutableLists to dictionaries and hash sets, quickly copmare the values of individual ILists, etc.</Description>
     <AssemblyTitle>Ibra.Comparers</AssemblyTitle>
     <VersionPrefix>1.0.1</VersionPrefix>
     <Authors>Eyas</Authors>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Ibra.Comparers</AssemblyName>
     <PackageId>Ibra.Comparers</PackageId>
     <PackageTags>List;Comparer;EqualityComparer;Comparison;Comparator;Equator</PackageTags>
     <PackageIconUrl>http://eyas.sh/images/nuget/IbraIcon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
     <Version>1.1.1</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>false</SignAssembly>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

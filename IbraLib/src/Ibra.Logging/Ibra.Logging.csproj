@@ -1,21 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Provides support for simple fluent logging that is lazily evaluated/printed when enabled.</Description>
     <AssemblyTitle>Ibra.Logging</AssemblyTitle>
     <VersionPrefix>1.0.0-alpha3</VersionPrefix>
     <Authors>Eyas</Authors>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Ibra.Logging</AssemblyName>
     <PackageId>Ibra.Logging</PackageId>
     <PackageTags>logger;log;logging;lazy</PackageTags>
     <PackageIconUrl>http://eyas.sh/images/nuget/IbraIcon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
     <Version>1.0.0-beta3</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

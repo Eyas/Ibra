@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Ibra.Comparers;
+using System.Collections.Generic;
 using System.Linq;
-
-using Ibra.Comparers;
-
 using Xunit;
 
 namespace IbraTests
@@ -26,7 +24,7 @@ namespace IbraTests
             IReadOnlyList<char> A = a.ToList();
             IReadOnlyList<char> B = b.ToList();
 
-            OrderedComparer<char> comparer = new OrderedComparer<char>();
+            OrderedComparer<char> comparer = new();
             Assert.True(comparer.Compare(A, B) < 0);
             Assert.True(comparer.Compare(B, A) > 0);
         }
@@ -42,7 +40,7 @@ namespace IbraTests
             IReadOnlyList<char> A = a.ToList();
             IReadOnlyList<char> B = b.ToList();
 
-            OrderedComparer<char> comparer = new OrderedComparer<char>();
+            OrderedComparer<char> comparer = new();
             Assert.True(comparer.Compare(A, B) == 0);
         }
 
@@ -58,7 +56,7 @@ namespace IbraTests
             IReadOnlyList<char> G = "10823".ToList();
             IReadOnlyList<char> H = "9383".ToList();
 
-            List<IReadOnlyList<char>> words = new List<IReadOnlyList<char>>(new IReadOnlyList<char>[] { A, B, C, D, E, F, G, H });
+            List<IReadOnlyList<char>> words = new(new IReadOnlyList<char>[] { A, B, C, D, E, F, G, H });
 
             words.Sort(new OrderedComparer<char>());
 

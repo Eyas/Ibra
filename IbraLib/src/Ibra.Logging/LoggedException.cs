@@ -50,10 +50,12 @@ namespace Ibra.Logging.Exceptions
             [System.Runtime.CompilerServices.CallerLineNumber] int line = -1) :
             base(what, inner)
         {
-            logger.Log(logSource, Level.ERROR, caller, line)
+            var w = logger.Log(logSource, Level.ERROR, caller, line)
                 ?.WriteLine($"{GetType().Name}: {what}")
-                .WriteLine($"\tInner Exception: {inner.GetType().Name}: {inner.Message}.")
-                .WriteLine(inner.StackTrace);
+                .WriteLine($"\tInner Exception: {inner.GetType().Name}: {inner.Message}.");
+
+            if (inner.StackTrace != null)
+                w?.WriteLine(inner.StackTrace);
         }
     }
 }

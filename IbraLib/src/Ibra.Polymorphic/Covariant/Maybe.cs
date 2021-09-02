@@ -23,7 +23,7 @@ namespace Ibra.Polymorphic.Covariant
     /// use static helper method Maybe.MaybeEqual{T1, T2}(Maybe{T1}, Maybe{T2}).
     /// </remarks>
     /// <typeparam name="T">The type that could be present in this object</typeparam>
-    public interface Maybe<out T>
+    public interface Maybe<out T> where T : notnull
     {
         /// <summary>
         /// Indicates whether or not a value is present in this instance
@@ -56,7 +56,7 @@ namespace Ibra.Polymorphic.Covariant
         /// A Just(<typeparamref name="TResult"/>) with <paramref name="mapper"/>(Value),
         /// if a value is present, or a Nothing(<typeparamref name="TResult"/>) otherwise.
         /// </returns>
-        Maybe<TResult> Map<TResult>(Func<T, TResult> mapper);
+        Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) where TResult : notnull;
 
         /// <summary>
         /// Maps this into a Maybe(<typeparamref name="TResult"/>).
@@ -72,7 +72,7 @@ namespace Ibra.Polymorphic.Covariant
         /// A Maybe(<typeparamref name="TResult"/>) with <paramref name="mapper"/>(Value),
         /// if a value is present, or a Nothing(<typeparamref name="TResult"/>) otherwise.
         /// </returns>
-        Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper);
+        Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) where TResult : notnull;
 
         /// <summary>
         /// Returns a concrete value from this Maybe(<typeparamref name="T"/>).
@@ -123,19 +123,19 @@ namespace Ibra.Polymorphic.Covariant
         /// matches Value, or otherwise a Nothing(<typeparamref name="T"/>).
         /// </returns>
         Maybe<T> Filter(Predicate<T> filter);
-        
+
         void Do(Action<T> justFunc);
         void Do(Action<T> justFunc, Action nothingFunc);
     }
 
-    public interface Just<out T> : Maybe<T>
+    public interface Just<out T> : Maybe<T> where T : notnull
     {
         new T Value { get; }
     }
 
 
     /// Concrete implementation of the `Just` covariant interface.
-    internal class CJust<T> : Just<T>
+    internal class CJust<T> : Just<T> where T : notnull
     {
         public CJust(T value) { Value = value; }
 
@@ -143,8 +143,12 @@ namespace Ibra.Polymorphic.Covariant
         public T Value { get; }
         T Maybe<T>.Value => Value;
 
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => new CJust<TResult>(mapper(Value));
-        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => mapper(Value);
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) where TResult : notnull
+        {
+            return new CJust<TResult>(mapper(Value));
+        }
+
+        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) where TResult : notnull => mapper(Value);
         public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => justFunc(Value);
         public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => justFunc(Value);
         public Maybe<T> Filter(Predicate<T> filter)
@@ -162,17 +166,17 @@ namespace Ibra.Polymorphic.Covariant
         }
     }
 
-    public class Nothing<T> : Maybe<T>
+    public class Nothing<T> : Maybe<T> where T : notnull
     {
-        public static readonly Nothing<T> Instance = new Nothing<T>();
+        public static readonly Nothing<T> Instance = new();
 
         private Nothing() { }
 
         public bool HasValue => false;
         T Maybe<T>.Value { get { throw new NotSupportedException($"Attempting to access `Value` on a {nameof(Nothing<T>)}."); } }
 
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) => Nothing<TResult>.Instance;
-        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) => Nothing<TResult>.Instance;
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) where TResult : notnull => Nothing<TResult>.Instance;
+        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) where TResult : notnull => Nothing<TResult>.Instance;
         public TResult Convert<TResult>(Func<T, TResult> justFunc, Func<TResult> nothingFunc) => nothingFunc();
         public TResult Convert<TResult>(Func<T, TResult> justFunc, TResult nothing) => nothing;
         public Maybe<T> Filter(Predicate<T> filter) => this;
@@ -197,7 +201,7 @@ namespace Ibra.Polymorphic.Covariant
         /// </description></item>
         /// </list>
         /// </summary>
-        public static bool MaybeEqual<T1, T2>(Maybe<T1> lhs, Maybe<T2> rhs)
+        public static bool MaybeEqual<T1, T2>(Maybe<T1> lhs, Maybe<T2> rhs) where T1 : notnull where T2 : notnull
         {
             if (!lhs.HasValue && !rhs.HasValue) return true;
             if (!lhs.HasValue || !rhs.HasValue) return false;
@@ -208,14 +212,14 @@ namespace Ibra.Polymorphic.Covariant
         /// Returns true if and only if this Maybe(T) type has a value
         /// and that value is equal <paramref name="other"/>.
         /// </summary>
-        public static bool JustEquals<T>(this Maybe<T> maybe, T other) => maybe.Convert(v => v.Equals(other), false);
+        public static bool JustEquals<T>(this Maybe<T> maybe, T other) where T : notnull => maybe.Convert(v => v.Equals(other), false);
 
         /// <summary>
         /// Get the contained value of a Maybe polymorphic type if it is
         /// present, or <paramref name="defaultValue"/> otherwise.
         /// </summary>
         /// <typeparam name="T">Contained type</typeparam>
-        public static T GetOrElse<T>(this Maybe<T> maybe, T defaultValue) => maybe.HasValue ? ((Just<T>)maybe).Value : defaultValue;
+        public static T GetOrElse<T>(this Maybe<T> maybe, T defaultValue) where T : notnull => maybe.HasValue ? ((Just<T>)maybe).Value : defaultValue;
 
         /// <summary>
         /// Get the contained value of a Maybe polymorphic type if it is
@@ -223,25 +227,30 @@ namespace Ibra.Polymorphic.Covariant
         /// otherwise.
         /// </summary>
         /// <typeparam name="T">Contained type</typeparam>
-        public static T GetOrElse<T>(this Maybe<T> maybe, Func<T> nothingFunc) => maybe.HasValue ? ((Just<T>)maybe).Value : nothingFunc();
+        public static T GetOrElse<T>(this Maybe<T> maybe, Func<T> nothingFunc) where T : notnull => maybe.HasValue ? ((Just<T>)maybe).Value : nothingFunc();
 
         /// <summary>
         /// Get a Maybe type out of a definite value.
         /// </summary>
         /// <typeparam name="T">The type of the definite value</typeparam>
-        public static Just<T> Just<T>(T value) => new CJust<T>(value);
+        public static Just<T> Just<T>(T value) where T : notnull => new CJust<T>(value);
 
         /// <summary>
         /// Map a Maybe of a discriminated union into a Maybe of some type
         /// </summary>
-        public static Maybe<T> Map<T, EA, EB>(this Maybe<Either<EA, EB>> maybe, Func<EA, T> mapA, Func<EB, T> mapB) =>
+        public static Maybe<T> Map<T, EA, EB>(this Maybe<Either<EA, EB>> maybe, Func<EA, T> mapA, Func<EB, T> mapB) where T : notnull where EA : notnull where EB : notnull =>
             maybe.Map(either => either.Map(mapA, mapB));
 
         /// <summary>
         /// Map a Maybe of a discriminated union into a Maybe of some type
         /// </summary>
         public static Maybe<T> Map<T, EA, EB, EC>(
-            this Maybe<Either<EA, EB, EC>> maybe, Func<EA, T> mapA, Func<EB, T> mapB, Func<EC, T> mapC) =>
+            this Maybe<Either<EA, EB, EC>> maybe, Func<EA, T> mapA, Func<EB, T> mapB, Func<EC, T> mapC)
+                where T : notnull
+            where EA : notnull
+            where EB : notnull
+            where EC : notnull
+            =>
             maybe.Map(either => either.Map(mapA, mapB, mapC));
 
         /// <summary>

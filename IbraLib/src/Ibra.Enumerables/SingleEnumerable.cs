@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Ibra.Enumerables
 {
-    internal sealed class SingleEnumerable<T> : IEnumerable<T>, IEnumerator<T>, IReadOnlyList<T>, IList<T>
+    internal sealed class SingleEnumerable<T> : IEnumerable<T>, IEnumerator<T>, IReadOnlyList<T>, IList<T> where T : notnull
     {
         private class SingleEnumeratorOnly : IEnumerator<T>
         {

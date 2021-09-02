@@ -27,7 +27,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public bool Equals(IReadOnlyList<T> a, IReadOnlyList<T> b)
+        public bool Equals(IReadOnlyList<T>? a, IReadOnlyList<T>? b)
         {
             if (a == b) return true;
             if (a == null) return false;
@@ -48,7 +48,8 @@ namespace Ibra.Comparers
             int h = 0;
             foreach (T item in x)
             {
-                h ^= _cmp.GetHashCode(item);
+                if (item == null) h += 0x700;
+                else h ^= _cmp.GetHashCode(item);
             }
             return h;
         }
@@ -87,7 +88,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public int Compare(IReadOnlyList<T> a, IReadOnlyList<T> b)
+        public int Compare(IReadOnlyList<T>? a, IReadOnlyList<T>? b)
         {
             if (a == b) return 0;
             if (a == null) return -1;
@@ -137,7 +138,7 @@ namespace Ibra.Comparers
         {
             _cmp = comparer;
         }
-        public int Compare(IReadOnlyList<T> a, IReadOnlyList<T> b)
+        public int Compare(IReadOnlyList<T>? a, IReadOnlyList<T>? b)
         {
             if (a == b) return 0;
             if (a == null) return -1;

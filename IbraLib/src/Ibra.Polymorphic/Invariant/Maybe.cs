@@ -25,12 +25,12 @@ namespace Ibra.Polymorphic.Invariant
     /// a HashSet or Dictionary.
     /// </remarks>
     /// <typeparam name="T">The type that could be held by this instnace.</typeparam>
-    public struct Maybe<T> : IEquatable<Maybe<T>>
+    public struct Maybe<T> : IEquatable<Maybe<T>> where T : notnull
     {
         /// <summary>
         /// Represents a Maybe(<typeparamref name="T"/>) with no value.
         /// </summary>
-        public static readonly Maybe<T> Nothing = default(Maybe<T>);
+        public static readonly Maybe<T> Nothing = new();
 
         /// <summary>
         /// Constructs a Maybe(<typeparamref name="T"/>) holding <paramref name="value"/>.
@@ -79,7 +79,7 @@ namespace Ibra.Polymorphic.Invariant
         /// A Maybe(<typeparamref name="TResult"/>) with <paramref name="mapper"/>(Value),
         /// if a value is present, or Nothing otherwise.
         /// </returns>
-        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) =>
+        public Maybe<TResult> Map<TResult>(Func<T, TResult> mapper) where TResult : notnull =>
             _hasValue ? new Maybe<TResult>(mapper(_value)) : Maybe<TResult>.Nothing;
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Ibra.Polymorphic.Invariant
         /// A Maybe(<typeparamref name="TResult"/>) with <paramref name="mapper"/>(Value),
         /// if a value is present, or Nothing otherwise.
         /// </returns>
-        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) =>
+        public Maybe<TResult> FlatMap<TResult>(Func<T, Maybe<TResult>> mapper) where TResult : notnull =>
             _hasValue ? mapper(_value) : Maybe<TResult>.Nothing;
 
         /// <summary>
@@ -184,19 +184,13 @@ namespace Ibra.Polymorphic.Invariant
             if (!_hasValue || !other._hasValue) return false;
             return _value.Equals(other._value);
         }
-        public override bool Equals(object obj) => As<Maybe<T>>(obj)?.Equals(this) ?? false;
+        public override bool Equals(object? obj) => obj is Maybe<T> m && m.Equals(this);
         public override int GetHashCode() => _hasValue ? _value.GetHashCode() : 0;
         public static bool operator ==(Maybe<T> first, Maybe<T> second) => first.Equals(second);
         public static bool operator !=(Maybe<T> first, Maybe<T> second) => !(first == second);
 
         private readonly bool _hasValue;
         private readonly T _value;
-
-        private static A? As<A>(object obj) where A : struct
-        {
-            if (obj is A) return (A)obj;
-            else return null;
-        }
     }
 
     public static class Maybe
@@ -205,12 +199,12 @@ namespace Ibra.Polymorphic.Invariant
         /// Get a Maybe type out of a definite value.
         /// </summary>
         /// <typeparam name="T">The type of the definite value</typeparam>
-        public static Maybe<T> Just<T>(T value) => new Maybe<T>(value);
+        public static Maybe<T> Just<T>(T value) where T : notnull => new(value);
 
         /// <summary>
         /// Converts a Maybe of a subtype into a Maybe of a supertype
         /// </summary>
-        public static Maybe<TTo> Vary<TFrom, TTo>(this Maybe<TFrom> from) where TFrom : TTo =>
+        public static Maybe<TTo> Vary<TFrom, TTo>(this Maybe<TFrom> from) where TFrom : notnull, TTo where TTo : notnull =>
             from.HasValue
             ? new Maybe<TTo>(from.Value)
             : Maybe<TTo>.Nothing;
@@ -222,8 +216,8 @@ namespace Ibra.Polymorphic.Invariant
         /// <typeparam name="T"></typeparam>
         /// <param name="from"></param>
         /// <returns></returns>
-        public static T? ToNullable<T>(this Maybe<T> from) where T : struct =>
-            from.HasValue ? from.Value : (T?)null;
+        public static T? ToNullable<T>(this Maybe<T> from) where T : notnull =>
+            from.HasValue ? from.Value : default;
 
     }
 }

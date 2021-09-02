@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ibra.Polymorphic.Covariant;
+using System;
 using System.Collections.Generic;
-
-using Ibra.Polymorphic.Covariant;
-
 using Xunit;
 
 namespace IbraTests.Polymorphic.Covariant
@@ -57,7 +55,7 @@ namespace IbraTests.Polymorphic.Covariant
         {
             int iiMap(int x) { Assert.True(false, "Expected this is unreached."); return x; }
             string isMap(int x) { Assert.True(false, "Expected this is unreached."); return x.ToString(); }
-            object soMap(string x) { Assert.True(false, "Expected this is unreached."); return null; }
+            object soMap(string x) { Assert.True(false, "Expected this is unreached."); return ""; }
 
             var iNothing = Nothing<int>.Instance;
             var sNothing = Nothing<string>.Instance;
@@ -121,7 +119,7 @@ namespace IbraTests.Polymorphic.Covariant
             // when FlatMap'ing a Nothing.. you can't even!
             Maybe<int> iiMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x); }
             Maybe<string> isMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x.ToString()); }
-            Maybe<object> soMap(string x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(null); }
+            Maybe<object> soMap(string x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(""); }
 
             var iNothing = Nothing<int>.Instance;
             var sNothing = Nothing<string>.Instance;
@@ -162,7 +160,7 @@ namespace IbraTests.Polymorphic.Covariant
                 Assert.Throws<NotSupportedException>(() => is_result.Value);
 
                 Assert.False(is_result.FlatMap(soMap).HasValue);
-                Assert.False(is_result.FlatMap(soMap).Map(o => o.ToString()).HasValue);
+                Assert.False(is_result.FlatMap(soMap).Map(o => o.ToString() ?? "").HasValue);
             }
         }
 
@@ -215,7 +213,7 @@ namespace IbraTests.Polymorphic.Covariant
         [Fact]
         public void Nothing_TrueFilter_DoesntEven()
         {
-            bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
+            static bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
 
             var nInt = Nothing<int>.Instance.Filter(cantEven);
 

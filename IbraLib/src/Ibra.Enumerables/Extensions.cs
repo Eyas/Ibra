@@ -35,10 +35,12 @@ namespace Ibra.Enumerables
         /// in the dictionary.
         /// </summary>
         public static IEnumerable<V> TrySelectFromDictionary<K, V>(this IEnumerable<K> sequence, IReadOnlyDictionary<K, V> dictionary)
+            where V : notnull
+            where K : notnull
         {
             foreach (K key in sequence)
             {
-                if (dictionary.TryGetValue(key, out V value)) yield return value;
+                if (dictionary.TryGetValue(key, out V? value)) yield return value!;
             }
         }
 
@@ -52,7 +54,7 @@ namespace Ibra.Enumerables
         /// <summary>
         /// Creates an Enumerable with a single element, <paramref name="item"/>.
         /// </summary>
-        public static IEnumerable<T> One<T>(T item) => new SingleEnumerable<T>(item);
+        public static IEnumerable<T> One<T>(T item) where T : notnull => new SingleEnumerable<T>(item);
 
         /// <summary>
         /// Project each element of <paramref name="sequence"/> into an element of

@@ -1,5 +1,5 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Ibra.Logging
 {
@@ -19,7 +19,7 @@ namespace Ibra.Logging
     /// </example>
     public static class StaticLogger
     {
-        private static readonly System.Lazy<Logger> _staticLogger = new System.Lazy<Logger>();
+        private static readonly System.Lazy<Logger> _staticLogger = new();
         public static Source RegisterSource(string name) => _staticLogger.Value.RegisterSource(name);
         public static void AddSource(Source source, Level level, TextWriter destination)
         {
@@ -101,23 +101,23 @@ namespace Ibra.Logging
 
         public Logger()
         {
-        	ALL = new Source(nameof(ALL), this, -1);
+            ALL = new Source(nameof(ALL), this, -1);
             _logLevels = new List<SourceRoutes>();
-        	_logSources = new Dictionary<string, Source>();
+            _logSources = new Dictionary<string, Source>();
         }
 
         public Source RegisterSource(string name)
         {
-            Source source;
+            Source? source;
 
             lock (_logSources)
-            if (!_logSources.TryGetValue(name, out source))
-            {
-                int index = _logLevels.Count;
-                source = new Source(name, this, index);
-                _logSources.Add(name, source);
-                _logLevels.Add(new SourceRoutes());
-            }
+                if (!_logSources.TryGetValue(name, out source))
+                {
+                    int index = _logLevels.Count;
+                    source = new Source(name, this, index);
+                    _logSources.Add(name, source);
+                    _logLevels.Add(new SourceRoutes());
+                }
 
             return source;
         }
@@ -167,7 +167,7 @@ namespace Ibra.Logging
     public class LoggingException : System.Exception
     {
         public LoggingException() { }
-        public LoggingException( string message ) : base( message ) { }
-        public LoggingException( string message, System.Exception inner ) : base( message, inner ) { }
+        public LoggingException(string message) : base(message) { }
+        public LoggingException(string message, System.Exception inner) : base(message, inner) { }
     }
 }

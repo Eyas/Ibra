@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Ibra.Comparers;
+using System.Collections.Generic;
 using System.Linq;
-
-using Ibra.Comparers;
-
 using Xunit;
 
 namespace IbraTests
@@ -31,7 +29,7 @@ namespace IbraTests
             IReadOnlyList<char> A = a.ToList();
             IReadOnlyList<char> B = b.ToList();
 
-            LexicographicalComparer<char> comparer = new LexicographicalComparer<char>(new CharacterOrdinalIgnoreCase());
+            LexicographicalComparer<char> comparer = new(new CharacterOrdinalIgnoreCase());
             Assert.True(comparer.Compare(A, B) < 0);
             Assert.True(comparer.Compare(B, A) > 0);
         }
@@ -51,7 +49,7 @@ namespace IbraTests
             IReadOnlyList<char> A = a.ToList();
             IReadOnlyList<char> B = b.ToList();
 
-            LexicographicalComparer<char> comparer = new LexicographicalComparer<char>(new CharacterOrdinalIgnoreCase());
+            LexicographicalComparer<char> comparer = new(new CharacterOrdinalIgnoreCase());
             Assert.True(comparer.Compare(A, B) == 0);
         }
 
@@ -67,7 +65,7 @@ namespace IbraTests
             IReadOnlyList<char> G = "Bob".ToList();
             IReadOnlyList<char> H = "Abracadabra".ToList();
 
-            List<IReadOnlyList<char>> words = new List<IReadOnlyList<char>>(new IReadOnlyList<char>[] { A, B, C, D, E, F, G, H });
+            List<IReadOnlyList<char>> words = new(new IReadOnlyList<char>[] { A, B, C, D, E, F, G, H });
 
             words.Sort(new LexicographicalComparer<char>(new CharacterOrdinalIgnoreCase()));
 

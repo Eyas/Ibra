@@ -9,7 +9,7 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_OneToOne_Simple()
         {
-            LazyFunc<int, int> lazy = new LazyFunc<int, int>(x => x * 2);
+            LazyFunc<int, int> lazy = new(x => x * 2);
 
             Assert.Equal(8, lazy[4]);
             Assert.Equal(8, lazy[4]);
@@ -25,7 +25,7 @@ namespace IbraTests
         public static void LazyFunc_OneToOne_ActuallyLazy()
         {
             int counter = 0;
-            LazyFunc<int, int> lazy = new LazyFunc<int, int>(x => // here's an impure function for ya
+            LazyFunc<int, int> lazy = new(x => // here's an impure function for ya
             {
                 counter++;
                 return x * x;
@@ -60,11 +60,11 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_OneToOne_RecursiveSucceeds()
         {
-            LazyFunc<int, int> fibonacci = null;
+            LazyFunc<int, int>? fibonacci = null;
             fibonacci = new LazyFunc<int, int>(x =>
             {
                 if (x <= 2) return 1;
-                return fibonacci[x - 1] + fibonacci[x - 2];
+                return fibonacci![x - 1] + fibonacci[x - 2];
             });
 
             Assert.Equal(4181, fibonacci[19]);
@@ -76,10 +76,10 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_Recursive_OneToOne_Succeeds()
         {
-            LazyFunc<int, int> fibonacci = new LazyFunc<int, int>((fibR, x) =>
+            LazyFunc<int, int> fibonacci = new((recurse, x) =>
             {
                 if (x <= 2) return 1;
-                return fibR(x - 1) + fibR(x - 2);
+                return recurse(x - 1) + recurse(x - 2);
             });
 
             Assert.Equal(4181, fibonacci[19]);
@@ -91,10 +91,10 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_OneToOne_RecursiveFails()
         {
-            LazyFunc<int, int> recurse = null;
+            LazyFunc<int, int>? recurse = null;
             recurse = new LazyFunc<int, int>(x =>
             {
-                return recurse[x];
+                return recurse![x];
             });
 
             Assert.Throws<System.InvalidOperationException>(() => recurse[5]);
@@ -105,7 +105,7 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_Recursive_OneToOne_RecursiveFails()
         {
-            LazyFunc<int, int> recurse = new LazyFunc<int, int>((rec, x) =>
+            LazyFunc<int, int> recurse = new((rec, x) =>
             {
                 return rec(x);
             });
@@ -119,7 +119,7 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_ManyInputs_Simple()
         {
-            LazyFunc<int, int, int> adder = new LazyFunc<int, int, int>((a, b) => a + b);
+            LazyFunc<int, int, int> adder = new((a, b) => a + b);
 
             Assert.Equal(0, adder.Get(0, 0));
             Assert.Equal(1, adder.Get(1, 0));
@@ -131,10 +131,10 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_ManyInputs_SafeRecursive()
         {
-            LazyFunc<int, int, int> adder = null;
-            adder = new LazyFunc<int, int, int>((a, b) => 
+            LazyFunc<int, int, int>? adder = null;
+            adder = new LazyFunc<int, int, int>((a, b) =>
             {
-                if (a < b) return adder.Get(b, a);
+                if (a < b) return adder!.Get(b, a);
                 return a + b;
             });
 
@@ -148,8 +148,8 @@ namespace IbraTests
         [Fact]
         public static void LazyFunc_ManyInputs_ThrowingRecursive()
         {
-            LazyFunc<int, int, int> adder = null;
-            adder = new LazyFunc<int, int, int>((a, b) => adder.Get(b, a));
+            LazyFunc<int, int, int>? adder = null;
+            adder = new LazyFunc<int, int, int>((a, b) => adder!.Get(b, a));
 
             Assert.Throws<System.InvalidOperationException>(() => adder.Get(0, 0));
             Assert.Throws<System.InvalidOperationException>(() => adder.Get(1, 0));
@@ -162,7 +162,7 @@ namespace IbraTests
         public static void LazyFunc_CustomComparator_ActuallyLazy()
         {
             int counter = 0;
-            LazyFunc<string, string> lazy = new LazyFunc<string, string>(str =>
+            LazyFunc<string, string> lazy = new(str =>
             {
                 ++counter;
                 return str.ToUpperInvariant();

@@ -1,11 +1,11 @@
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Ibra.Logging
 {
     internal class SourceRoutes
     {
-        private readonly Dictionary<TextWriter, Level> _writers = new Dictionary<TextWriter, Level>();
+        private readonly Dictionary<TextWriter, Level> _writers = new();
 
         public SourceRoutes() { }
         public Level MaxVerbosity { get; private set; } = Level.NEVER;

@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Ibra.Polymorphic.Invariant;
+using System;
 using System.Collections.Generic;
-
-using Ibra.Polymorphic.Invariant;
-
 using Xunit;
 
 namespace IbraTests.Polymorphic.Invariant
@@ -54,7 +52,7 @@ namespace IbraTests.Polymorphic.Invariant
         {
             int iiMap(int x) { Assert.True(false, "Expected this is unreached."); return x; }
             string isMap(int x) { Assert.True(false, "Expected this is unreached."); return x.ToString(); }
-            object soMap(string x) { Assert.True(false, "Expected this is unreached."); return null; }
+            object soMap(string x) { Assert.True(false, "Expected this is unreached."); return ""; }
 
             var iNothing = Maybe<int>.Nothing;
             var sNothing = Maybe<string>.Nothing;
@@ -118,7 +116,7 @@ namespace IbraTests.Polymorphic.Invariant
             // when FlatMap'ing a Nothing.. you can't even!
             Maybe<int> iiMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x); }
             Maybe<string> isMap(int x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just(x.ToString()); }
-            Maybe<object> soMap(string x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(null); }
+            Maybe<object> soMap(string x) { Assert.True(false, "Expected this is unreached."); return Maybe.Just<object>(""); }
 
             var iNothing = Maybe<int>.Nothing;
             var sNothing = Maybe<string>.Nothing;
@@ -159,7 +157,7 @@ namespace IbraTests.Polymorphic.Invariant
                 Assert.Throws<NotSupportedException>(() => is_result.Value);
 
                 Assert.False(is_result.FlatMap(soMap).HasValue);
-                Assert.False(is_result.FlatMap(soMap).Map(o => o.ToString()).HasValue);
+                Assert.False(is_result.FlatMap(soMap).Map(o => o.ToString() ?? "").HasValue);
             }
         }
 
@@ -212,7 +210,7 @@ namespace IbraTests.Polymorphic.Invariant
         [Fact]
         public void Nothing_TrueFilter_DoesntEven()
         {
-            bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
+            static bool cantEven(int o) { Assert.True(false, "Expected unreached"); return true; }
 
             var nInt = Maybe<int>.Nothing.Filter(cantEven);
 

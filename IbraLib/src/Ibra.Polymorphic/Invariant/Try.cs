@@ -2,21 +2,21 @@ using System;
 
 namespace Ibra.Polymorphic.Invariant
 {
-    public struct Try<TResult>
+    public struct Try<TResult> where TResult : notnull
     {
-        private readonly Exception _exception;
-        private readonly TResult _success;
-        
+        private readonly Exception? _exception;
+        private readonly TResult? _success;
+
         internal Try(TResult success)
         {
             _exception = null;
             _success = success;
         }
-        
+
         internal Try(Exception failure)
         {
             _exception = failure;
-            _success = default(TResult);
+            _success = default;
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Ibra.Polymorphic.Invariant
         public TResult GetOrThrow()
         {
             if (_exception != null) throw _exception;
-            return _success;
+            return _success!;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ibra.Polymorphic.Invariant
         public TResult2 Convert<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure)
         {
             if (_exception != null) return onFailure(_exception);
-            else return onSuccess(_success);
+            else return onSuccess(_success!);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Ibra.Polymorphic.Invariant
         public Try<Unit> Then(Action<TResult> onSuccess)
         {
             if (_exception != null) return new Try<Unit>(_exception);
-            return onSuccess.Try(_success);
+            return onSuccess.Try(_success!);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Ibra.Polymorphic.Invariant
         public Try<Unit> Then(Action<TResult> onSuccess, Action<Exception> onFailure)
         {
             if (_exception != null) return onFailure.Try(_exception);
-            else return onSuccess.Try(_success);
+            else return onSuccess.Try(_success!);
         }
 
         /// <summary>
@@ -104,12 +104,12 @@ namespace Ibra.Polymorphic.Invariant
         /// in the Try(<typeparam name="TResult2"/>) being returned containing an
         /// exception.
         /// </remarks>
-        public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess)
+        public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess) where TResult2 : notnull
         {
             if (_exception != null) return new Try<TResult2>(_exception);
-            else return onSuccess.Try(_success);
+            else return onSuccess.Try(_success!);
         }
-        
+
         /// <summary>
         /// Returns a Try of the result of <paramref name="onSuccess"/> if this
         /// <see cref="Invariant.Try{TResult}"/> is successful. Otherwise returns
@@ -121,14 +121,15 @@ namespace Ibra.Polymorphic.Invariant
         /// <paramref name="onFailure"/> will result in the Try being returned containing
         /// an exception.
         /// </remarks>
-        public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure)
+        public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure) where TResult2 : notnull
         {
             if (_exception != null) return onFailure.Try(_exception);
-            else return onSuccess.Try(_success);
+            else return onSuccess.Try(_success!);
         }
     }
-    
-    public static class TryExtensions {
+
+    public static class TryExtensions
+    {
         /// <summary>
         /// Executes a void function <paramref name="action"/> and returns
         /// <see cref="Invariant.Try{Unit}"/>.
@@ -167,7 +168,7 @@ namespace Ibra.Polymorphic.Invariant
         /// <summary>
         /// Executes a function and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
-        public static Try<TResult> Try<TResult>(this Func<TResult> function)
+        public static Try<TResult> Try<TResult>(this Func<TResult> function) where TResult : notnull
         {
             try
             {
@@ -188,7 +189,7 @@ namespace Ibra.Polymorphic.Invariant
         /// and creating a closure, this (and ther) convinience methods here do away with the closre
         /// by re-implementing the `Try` method.
         /// </remarks>
-        public static Try<TResult> Try<TArg, TResult>(this Func<TArg, TResult> function, TArg arg)
+        public static Try<TResult> Try<TArg, TResult>(this Func<TArg, TResult> function, TArg arg) where TArg : notnull where TResult : notnull
         {
             try
             {
@@ -205,6 +206,9 @@ namespace Ibra.Polymorphic.Invariant
         /// and returns its result as a <see cref="Invariant.Try{TResult}"/>.
         /// </summary>
         public static Try<TResult> Try<TArg1, TArg2, TResult>(this Func<TArg1, TArg2, TResult> function, TArg1 arg1, TArg2 arg2)
+            where TArg1 : notnull
+            where TArg2 : notnull
+            where TResult : notnull
         {
             try
             {
@@ -223,6 +227,10 @@ namespace Ibra.Polymorphic.Invariant
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TResult>(
             this Func<TArg1, TArg2, TArg3, TResult> function,
             TArg1 arg1, TArg2 arg2, TArg3 arg3)
+            where TArg1 : notnull
+            where TArg2 : notnull
+            where TArg3 : notnull
+            where TResult : notnull
         {
             try
             {
@@ -241,6 +249,11 @@ namespace Ibra.Polymorphic.Invariant
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TResult>(
             this Func<TArg1, TArg2, TArg3, TArg4, TResult> function,
             TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4)
+            where TArg1 : notnull
+            where TArg2 : notnull
+            where TArg3 : notnull
+            where TArg4 : notnull
+            where TResult : notnull
         {
             try
             {
@@ -260,6 +273,12 @@ namespace Ibra.Polymorphic.Invariant
         public static Try<TResult> Try<TArg1, TArg2, TArg3, TArg4, TArg5, TResult>(
             this Func<TArg1, TArg2, TArg3, TArg4, TArg5, TResult> function,
             TArg1 arg1, TArg2 arg2, TArg3 arg3, TArg4 arg4, TArg5 arg5)
+            where TArg1 : notnull
+            where TArg2 : notnull
+            where TArg3 : notnull
+            where TArg4 : notnull
+            where TArg5 : notnull
+            where TResult : notnull
         {
             try
             {
@@ -277,6 +296,7 @@ namespace Ibra.Polymorphic.Invariant
         /// be a `Failure`.
         /// </summary>
         public static Try<TResult> TryCatch<TResult, TException>(this Func<TResult> func, Func<TException, TResult> catcher)
+            where TResult : notnull
             where TException : Exception
         {
             try
@@ -296,6 +316,7 @@ namespace Ibra.Polymorphic.Invariant
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2>(
             this Func<TResult> func, Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2)
+            where TResult : notnull
             where TException1 : Exception
             where TException2 : Exception
         {
@@ -320,6 +341,7 @@ namespace Ibra.Polymorphic.Invariant
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2, TException3>(
             this Func<TResult> func, Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2, Func<TException3, TResult> catcher3)
+            where TResult : notnull
             where TException1 : Exception
             where TException2 : Exception
             where TException3 : Exception
@@ -349,6 +371,7 @@ namespace Ibra.Polymorphic.Invariant
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2, TException3, TException4>(
             this Func<TResult> func, Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2, Func<TException3, TResult> catcher3, Func<TException4, TResult> catcher4)
+            where TResult : notnull
             where TException1 : Exception
             where TException2 : Exception
             where TException3 : Exception

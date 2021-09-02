@@ -1,21 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Provides support polymorphic types in C#, such as Covariant and Invariant Maybe (Optional) types, and type unions.</Description>
     <AssemblyTitle>Ibra.Polymorphic</AssemblyTitle>
     <VersionPrefix>1.1.0</VersionPrefix>
     <Authors>Eyas</Authors>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Ibra.Polymorphic</AssemblyName>
     <PackageId>Ibra.Polymorphic</PackageId>
     <PackageTags>polymorphic;type union;maybe;some;just;optional;option;either;union</PackageTags>
     <PackageIconUrl>http://eyas.sh/images/nuget/IbraIcon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Eyas/Ibra</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Eyas/Ibra/master/LICENSE</PackageLicenseUrl>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
     <Version>1.3.0</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

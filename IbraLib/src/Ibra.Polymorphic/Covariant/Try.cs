@@ -44,7 +44,7 @@ namespace Ibra.Polymorphic.Covariant
         /// Failure(<typeparam name="TResult2" />).
         /// </remarks>
         Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess);
-        
+
         /// <summary>
         /// Returns a Try of the result of <paramref name="onSuccess"/> if this
         /// <see cref="Covariant.Try{TResult}"/> is successful. Otherwise returns
@@ -57,13 +57,13 @@ namespace Ibra.Polymorphic.Covariant
         /// resolving to a Failure(<typeparam name="TResult2" />).
         /// </remarks>
         Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure);
-        
+
         /// <summary>
         /// Returns the result of this Try if it is successful, or throws the
         /// stored Exception otherwise.
         /// </summary>
         TResult GetOrThrow();
-        
+
         /// <summary>
         /// Returns the reuslt of <paramref name="onSuccess"/> if this
         /// <see cref="Covariant.Try{TResult}"/> is successful, or otherwise
@@ -83,7 +83,7 @@ namespace Ibra.Polymorphic.Covariant
     public sealed class Success<TResult> : Try<TResult>
     {
         public Success(TResult result) { Result = result; }
-        
+
         /// <summary>
         /// The successful result of our action.
         /// </summary>
@@ -104,14 +104,14 @@ namespace Ibra.Polymorphic.Covariant
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure)
             => onSuccess.Try(Result);
     }
-    
+
     /// <summary>
     /// Represents a failed action with an Exception indicating the nature of this failure.
     /// </summary>
     public sealed class Failure<TResult> : Try<TResult>
     {
         public Failure(Exception e) { Exception = e; }
-        
+
         /// <summary>
         /// The error thrown during the execution of the action leading to this failure. This exception
         /// has not been caught by any previous call to `Catch`.
@@ -133,8 +133,9 @@ namespace Ibra.Polymorphic.Covariant
         public Try<TResult2> Then<TResult2>(Func<TResult, TResult2> onSuccess, Func<Exception, TResult2> onFailure)
             => onFailure.Try(Exception);
     }
-    
-    public static class TryExtensions {
+
+    public static class TryExtensions
+    {
         /// <summary>
         /// Executes a void function <paramref name="action"/> and returns
         /// <see cref="Covariant.Try{Unit}"/>.
@@ -183,7 +184,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function which takes one argument, <paramref name="arg"/>, and returns
         /// its result as a <see cref="Covariant.Try{TResult}"/>.
@@ -204,7 +205,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/> and <paramref name="arg2"/>,
         /// and returns its result as a <see cref="Covariant.Try{TResult}"/>.
@@ -221,7 +222,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>, and
         /// <paramref name="arg3"/>, and returns its result as a <see cref="Covariant.Try{TResult}"/>.
@@ -238,7 +239,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>,
         /// <paramref name="arg2"/>, <paramref name="arg3"/>, and <paramref name="arg4"/>,
@@ -256,7 +257,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function which takes arguments, <paramref name="arg1"/>, <paramref name="arg2"/>,
         /// <paramref name="arg3"/>, <paramref name="arg4"/>, and <paramref name="arg5"/> and returns its
@@ -274,7 +275,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// Executes a function <paramref name="func" />, catching the any exception of type `TException` thrown and turning
         /// that into a successful argument. If another `Exception` of unknown type was thrown, the result will continue to
@@ -300,7 +301,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2>(this Func<TResult> func,
             Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2)
@@ -326,7 +327,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2, TException3>(this Func<TResult> func,
             Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2, Func<TException3, TResult> catcher3)
@@ -358,7 +359,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <seealso cref="TryExtensions.TryCatch{TResult, TException}" />
         public static Try<TResult> TryCatch<TResult, TException1, TException2, TException3, TException4>(this Func<TResult> func,
             Func<TException1, TResult> catcher1, Func<TException2, TResult> catcher2, Func<TException3, TResult> catcher3, Func<TException4, TResult> catcher4)
@@ -396,7 +397,7 @@ namespace Ibra.Polymorphic.Covariant
                 return new Failure<TResult>(e);
             }
         }
-        
+
         /// <summary>
         /// If a <see cref="Covariant.Try{TResult}"/> is a <see cref="Failre{TResult}"/> whose inner Exception
         /// if of type <typeparamref name="TException"/> , catch the result and turn that into a <see cref="Covariant.Try{TResult}"/>

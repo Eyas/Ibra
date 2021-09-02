@@ -50,13 +50,13 @@ namespace Ibra.Lazy
         R Get(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
     }
 
-    public sealed class LazyFunc<T, R> : ILazyFunc<T, R>
+    public sealed class LazyFunc<T, R> : ILazyFunc<T, R> where T : notnull where R : notnull
     {
         #region Internals
         private sealed class ResultInfo // needs to be a mutable reference type
         {
-            public bool HasValue = false;
-            public R Value = default(R);
+            public bool Initialized = false;  // 'R?' doesn't do the right thing.
+            public R? Value = default;
         }
         /// <summary>
         /// Uncached version of our function
@@ -95,9 +95,9 @@ namespace Ibra.Lazy
         {
             get
             {
-                if (_lazy.TryGetValue(input, out ResultInfo result))
+                if (_lazy.TryGetValue(input, out ResultInfo? result))
                 {
-                    if (result.HasValue) return result.Value;
+                    if (result.Value != null && result.Initialized) return result.Value;
                     else throw new InvalidOperationException("Attemptign to recursively get value from LazyFunc.");
                 } // all code paths return/throw
 
@@ -105,13 +105,13 @@ namespace Ibra.Lazy
                 _lazy.Add(input, result); // add before calling to detect recursive calls
                 R output = _func(input);
                 result.Value = output;
-                result.HasValue = true;
+                result.Initialized = true;
                 return output;
             }
         }
         public R Get(T input) => this[input];
     }
-    public sealed class LazyFunc<T1, T2, R> : ILazyFunc<T1, T2, R>
+    public sealed class LazyFunc<T1, T2, R> : ILazyFunc<T1, T2, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2), R> _lazy;
 
@@ -138,7 +138,7 @@ namespace Ibra.Lazy
             return _lazy[(arg1, arg2)];
         }
     }
-    public sealed class LazyFunc<T1, T2, T3, R> : ILazyFunc<T1, T2, T3, R>
+    public sealed class LazyFunc<T1, T2, T3, R> : ILazyFunc<T1, T2, T3, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2, T3), R> _lazy;
 
@@ -165,7 +165,7 @@ namespace Ibra.Lazy
             return _lazy[(arg1, arg2, arg3)];
         }
     }
-    public sealed class LazyFunc<T1, T2, T3, T4, R> : ILazyFunc<T1, T2, T3, T4, R>
+    public sealed class LazyFunc<T1, T2, T3, T4, R> : ILazyFunc<T1, T2, T3, T4, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2, T3, T4), R> _lazy;
 
@@ -192,7 +192,7 @@ namespace Ibra.Lazy
             return _lazy[(arg1, arg2, arg3, arg4)];
         }
     }
-    public sealed class LazyFunc<T1, T2, T3, T4, T5, R> : ILazyFunc<T1, T2, T3, T4, T5, R>
+    public sealed class LazyFunc<T1, T2, T3, T4, T5, R> : ILazyFunc<T1, T2, T3, T4, T5, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2, T3, T4, T5), R> _lazy;
 
@@ -219,7 +219,7 @@ namespace Ibra.Lazy
             return _lazy[(arg1, arg2, arg3, arg4, arg5)];
         }
     }
-    public sealed class LazyFunc<T1, T2, T3, T4, T5, T6, R> : ILazyFunc<T1, T2, T3, T4, T5, T6, R>
+    public sealed class LazyFunc<T1, T2, T3, T4, T5, T6, R> : ILazyFunc<T1, T2, T3, T4, T5, T6, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2, T3, T4, T5, T6), R> _lazy;
 
@@ -246,7 +246,7 @@ namespace Ibra.Lazy
             return _lazy[(arg1, arg2, arg3, arg4, arg5, arg6)];
         }
     }
-    public sealed class LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> : ILazyFunc<T1, T2, T3, T4, T5, T6, T7, R>
+    public sealed class LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> : ILazyFunc<T1, T2, T3, T4, T5, T6, T7, R> where R : notnull
     {
         private readonly LazyFunc<(T1, T2, T3, T4, T5, T6, T7), R> _lazy;
 
@@ -277,114 +277,146 @@ namespace Ibra.Lazy
     public static class LazyFunc
     {
         public static LazyFunc<T, R> Create<T, R>(Func<T, R> func, IEqualityComparer<T> comparer)
+            where T : notnull
+            where R : notnull
         {
             return new LazyFunc<T, R>(func, comparer);
         }
         public static LazyFunc<T, R> Create<T, R>(Func<T, R> func)
+            where T : notnull
+            where R : notnull
         {
             return new LazyFunc<T, R>(func);
         }
         public static LazyFunc<T, R> Create<T, R>(Func<Func<T, R>, T, R> recursiveFunc, IEqualityComparer<T> comparer)
+            where T : notnull
+            where R : notnull
         {
             return new LazyFunc<T, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T, R> Create<T, R>(Func<Func<T, R>, T, R> recursiveFunc)
+            where T : notnull
+            where R : notnull
         {
             return new LazyFunc<T, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, R> Create<T1, T2, R>(Func<T1, T2, R> func, IEqualityComparer<(T1, T2)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, R> Create<T1, T2, R>(Func<T1, T2, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, R>(func);
         }
         public static LazyFunc<T1, T2, R> Create<T1, T2, R>(Func<Func<T1, T2, R>, T1, T2, R> recursiveFunc, IEqualityComparer<(T1, T2)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, R> Create<T1, T2, R>(Func<Func<T1, T2, R>, T1, T2, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, T3, R> Create<T1, T2, T3, R>(Func<T1, T2, T3, R> func, IEqualityComparer<(T1, T2, T3)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, T3, R> Create<T1, T2, T3, R>(Func<T1, T2, T3, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, R>(func);
         }
         public static LazyFunc<T1, T2, T3, R> Create<T1, T2, T3, R>(Func<Func<T1, T2, T3, R>, T1, T2, T3, R> recursiveFunc, IEqualityComparer<(T1, T2, T3)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, T3, R> Create<T1, T2, T3, R>(Func<Func<T1, T2, T3, R>, T1, T2, T3, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, T3, T4, R> Create<T1, T2, T3, T4, R>(Func<T1, T2, T3, T4, R> func, IEqualityComparer<(T1, T2, T3, T4)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, R> Create<T1, T2, T3, T4, R>(Func<T1, T2, T3, T4, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, R>(func);
         }
         public static LazyFunc<T1, T2, T3, T4, R> Create<T1, T2, T3, T4, R>(Func<Func<T1, T2, T3, T4, R>, T1, T2, T3, T4, R> recursiveFunc, IEqualityComparer<(T1, T2, T3, T4)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, R> Create<T1, T2, T3, T4, R>(Func<Func<T1, T2, T3, T4, R>, T1, T2, T3, T4, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, R> Create<T1, T2, T3, T4, T5, R>(Func<T1, T2, T3, T4, T5, R> func, IEqualityComparer<(T1, T2, T3, T4, T5)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, R> Create<T1, T2, T3, T4, T5, R>(Func<T1, T2, T3, T4, T5, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, R>(func);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, R> Create<T1, T2, T3, T4, T5, R>(Func<Func<T1, T2, T3, T4, T5, R>, T1, T2, T3, T4, T5, R> recursiveFunc, IEqualityComparer<(T1, T2, T3, T4, T5)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, R> Create<T1, T2, T3, T4, T5, R>(Func<Func<T1, T2, T3, T4, T5, R>, T1, T2, T3, T4, T5, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, R> Create<T1, T2, T3, T4, T5, T6, R>(Func<T1, T2, T3, T4, T5, T6, R> func, IEqualityComparer<(T1, T2, T3, T4, T5, T6)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, R> Create<T1, T2, T3, T4, T5, T6, R>(Func<T1, T2, T3, T4, T5, T6, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, R>(func);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, R> Create<T1, T2, T3, T4, T5, T6, R>(Func<Func<T1, T2, T3, T4, T5, T6, R>, T1, T2, T3, T4, T5, T6, R> recursiveFunc, IEqualityComparer<(T1, T2, T3, T4, T5, T6)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, R> Create<T1, T2, T3, T4, T5, T6, R>(Func<Func<T1, T2, T3, T4, T5, T6, R>, T1, T2, T3, T4, T5, T6, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, R>(recursiveFunc);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> Create<T1, T2, T3, T4, T5, T6, T7, R>(Func<T1, T2, T3, T4, T5, T6, T7, R> func, IEqualityComparer<(T1, T2, T3, T4, T5, T6, T7)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, T7, R>(func, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> Create<T1, T2, T3, T4, T5, T6, T7, R>(Func<T1, T2, T3, T4, T5, T6, T7, R> func)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, T7, R>(func);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> Create<T1, T2, T3, T4, T5, T6, T7, R>(Func<Func<T1, T2, T3, T4, T5, T6, T7, R>, T1, T2, T3, T4, T5, T6, T7, R> recursiveFunc, IEqualityComparer<(T1, T2, T3, T4, T5, T6, T7)> comparer)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, T7, R>(recursiveFunc, comparer);
         }
         public static LazyFunc<T1, T2, T3, T4, T5, T6, T7, R> Create<T1, T2, T3, T4, T5, T6, T7, R>(Func<Func<T1, T2, T3, T4, T5, T6, T7, R>, T1, T2, T3, T4, T5, T6, T7, R> recursiveFunc)
+            where R : notnull
         {
             return new LazyFunc<T1, T2, T3, T4, T5, T6, T7, R>(recursiveFunc);
         }
